@@ -624,6 +624,15 @@
 		<key>logo_code</key>
 		<string>ath</string>
 	</dict>
+	<key>atmt</key>
+	<dict>
+		<key>keyrune_class</key>
+		<string>tmt</string>
+		<key>keyrune_unicode</key>
+		<string>ea06</string>
+		<key>logo_code</key>
+		<string>tmt</string>
+	</dict>
 	<key>atq</key>
 	<dict>
 		<key>keyrune_class</key>
