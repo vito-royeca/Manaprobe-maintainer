@@ -159,10 +159,10 @@ class Maintainer {
         configuration.user = user
         
         // For CLI
-         configuration.credential = .trust
+//        configuration.credential = .cleartextPassword(password: password)
         
         // For Jenkins
-//        configuration.credential = .scramSHA256(password: password)
+        configuration.credential = .scramSHA256(password: password)
         
         configuration.ssl = false
         configuration.sslServiceConfiguration = SSLService.Configuration()
@@ -175,124 +175,122 @@ class Maintainer {
         }
     }
     
-    func updateDatabase() {
-        Task {
-            let label = "updateDatabase"
-            let dateStart = startActivity(label: label)
-            var processes = [() async throws -> Void]()
+    func updateDatabase() async throws -> Void {
+        let label = "updateDatabase"
+        let dateStart = startActivity(label: label)
+        var processes = [() async throws -> Void]()
+        
+        if isFullUpdate {
+            filePrefix         = "managuide-\(Date().timeIntervalSince1970)"
+            bulkDataLocalPath  = "\(cachePath)/\(filePrefix)_\(bulkDataFileName)"
+            setsLocalPath      = "\(cachePath)/\(filePrefix)_\(setsFileName)"
+            keyruneLocalPath   = "\(cachePath)/\(filePrefix)_\(keyruneFileName)"
+            rulesLocalPath     = "\(cachePath)/\(filePrefix)_\(rulesFileName)"
             
-            if isFullUpdate {
-                filePrefix         = "managuide-\(Date().timeIntervalSince1970)"
-                bulkDataLocalPath  = "\(cachePath)/\(filePrefix)_\(bulkDataFileName)"
-                setsLocalPath      = "\(cachePath)/\(filePrefix)_\(setsFileName)"
-                keyruneLocalPath   = "\(cachePath)/\(filePrefix)_\(keyruneFileName)"
-                rulesLocalPath     = "\(cachePath)/\(filePrefix)_\(rulesFileName)"
-                
-                // downloads
-                processes.append({
-                    try await self.fetchData(from: self.bulkDataRemotePath, saveTo: self.bulkDataLocalPath)
-                })
-                processes.append({
-                    try await self.createBulkData()
-                })
-                processes.append({
-                    try await self.fetchData(from: self.setsRemotePath, saveTo: self.setsLocalPath)
-                })
-                processes.append({
-                    try await self.fetchData(from: self.keyruneRemotePath, saveTo: self.keyruneLocalPath)
-                })
-                processes.append({
-                    try await self.fetchData(from: self.cardsRemotePath, saveTo: self.cardsLocalPath)
-                })
-                processes.append({
-                    try await self.fetchData(from: self.rulingsRemotePath, saveTo: self.rulingsLocalPath)
-                })
-                processes.append({
-                    try await self.fetchData(from: self.rulesRemotePath, saveTo: self.rulesLocalPath)
-                })
-                processes.append({
-                    try await self.downloadSetLogos()
-                })
-                processes.append({
-                    try await self.fetchCardImages()
-                })
-                processes.append({
-                    try await self.fetchMigrations()
-                })
-                
-                // updates
-                processes.append({
-                    try await self.processSetsData()
-                })
-                processes.append({
-                    try await self.processCardsData(type: .misc)
-                })
-                processes.append({
-                    try await self.processCardsData(type: .cards)
-                })
-                processes.append({
-                    try await self.processCardsData(type: .partsAndFaces)
-                })
-                processes.append({
-                    try await self.processRulingsData()
-                })
-                processes.append({
-                    try await self.processOtherCardsData()
-                })
-                processes.append({
-                    try await self.processComprehensiveRulesData()
-                })
-                processes.append({
-                    try await self.processMigrationsData()
-                })
-                processes.append({
-                    try await self.processMaterializedViews()
-                })
-            }
+            // downloads
+            processes.append({
+                try await self.fetchData(from: self.bulkDataRemotePath, saveTo: self.bulkDataLocalPath)
+            })
+            processes.append({
+                try await self.createBulkData()
+            })
+            processes.append({
+                try await self.fetchData(from: self.setsRemotePath, saveTo: self.setsLocalPath)
+            })
+            processes.append({
+                try await self.fetchData(from: self.keyruneRemotePath, saveTo: self.keyruneLocalPath)
+            })
+            processes.append({
+                try await self.fetchData(from: self.cardsRemotePath, saveTo: self.cardsLocalPath)
+            })
+            processes.append({
+                try await self.fetchData(from: self.rulingsRemotePath, saveTo: self.rulingsLocalPath)
+            })
+            processes.append({
+                try await self.fetchData(from: self.rulesRemotePath, saveTo: self.rulesLocalPath)
+            })
+            processes.append({
+                try await self.downloadSetLogos()
+            })
+            processes.append({
+                try await self.fetchCardImages()
+            })
+            processes.append({
+                try await self.fetchMigrations()
+            })
             
+            // updates
             processes.append({
-                try await self.processPricingData()
+                try await self.processSetsData()
             })
             processes.append({
-                try await self.processServerUpdate()
+                try await self.processCardsData(type: .misc)
             })
             processes.append({
-                try await self.processServerReindex()
+                try await self.processCardsData(type: .cards)
             })
             processes.append({
-                try await self.processServerVacuum()
+                try await self.processCardsData(type: .partsAndFaces)
             })
-
-            try await exec(processes: processes)
-
-            do {
-                if FileManager.default.fileExists(atPath: self.bulkDataLocalPath) {
-                    try FileManager.default.removeItem(atPath: self.bulkDataLocalPath)
-                }
-                if FileManager.default.fileExists(atPath: self.setsLocalPath) {
-                    try FileManager.default.removeItem(atPath: self.setsLocalPath)
-                }
-                if FileManager.default.fileExists(atPath: self.keyruneLocalPath) {
-                    try FileManager.default.removeItem(atPath: self.keyruneLocalPath)
-                }
-                if FileManager.default.fileExists(atPath: self.cardsLocalPath) {
-                    try FileManager.default.removeItem(atPath: self.cardsLocalPath)
-                }
-                if FileManager.default.fileExists(atPath: self.rulingsLocalPath) {
-                    try FileManager.default.removeItem(atPath: self.rulingsLocalPath)
-                }
-                if FileManager.default.fileExists(atPath: self.rulesLocalPath) {
-                    try FileManager.default.removeItem(atPath: self.rulesLocalPath)
-                }
-                if FileManager.default.fileExists(atPath: self.milestoneLocalPath) {
-                    try FileManager.default.removeItem(atPath: self.milestoneLocalPath)
-                }
-            } catch {
-                print(error)
-            }
-            self.endActivity(label: label, from: dateStart)
-            exit(EXIT_SUCCESS)
+            processes.append({
+                try await self.processRulingsData()
+            })
+            processes.append({
+                try await self.processOtherCardsData()
+            })
+            processes.append({
+                try await self.processComprehensiveRulesData()
+            })
+            processes.append({
+                try await self.processMigrationsData()
+            })
+            processes.append({
+                try await self.processMaterializedViews()
+            })
         }
+        
+        processes.append({
+            try await self.processPricingData()
+        })
+        processes.append({
+            try await self.processServerUpdate()
+        })
+        processes.append({
+            try await self.processServerReindex()
+        })
+        processes.append({
+            try await self.processServerVacuum()
+        })
+
+        try await exec(processes: processes)
+
+        do {
+            if FileManager.default.fileExists(atPath: self.bulkDataLocalPath) {
+                try FileManager.default.removeItem(atPath: self.bulkDataLocalPath)
+            }
+            if FileManager.default.fileExists(atPath: self.setsLocalPath) {
+                try FileManager.default.removeItem(atPath: self.setsLocalPath)
+            }
+            if FileManager.default.fileExists(atPath: self.keyruneLocalPath) {
+                try FileManager.default.removeItem(atPath: self.keyruneLocalPath)
+            }
+            if FileManager.default.fileExists(atPath: self.cardsLocalPath) {
+                try FileManager.default.removeItem(atPath: self.cardsLocalPath)
+            }
+            if FileManager.default.fileExists(atPath: self.rulingsLocalPath) {
+                try FileManager.default.removeItem(atPath: self.rulingsLocalPath)
+            }
+            if FileManager.default.fileExists(atPath: self.rulesLocalPath) {
+                try FileManager.default.removeItem(atPath: self.rulesLocalPath)
+            }
+            if FileManager.default.fileExists(atPath: self.milestoneLocalPath) {
+                try FileManager.default.removeItem(atPath: self.milestoneLocalPath)
+            }
+        } catch {
+            print(error)
+        }
+        self.endActivity(label: label, from: dateStart)
+        exit(EXIT_SUCCESS)
     }
 
     // MARK: - Bulk Data methods

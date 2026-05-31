@@ -113,9 +113,9 @@ extension Maintainer {
             let encoder = JSONEncoder()
             let data = try encoder.encode(milestone)
             
-            FileManager.default.createFile(atPath: path,
-                                           contents: data,
-                                           attributes: nil)
+            let _ = FileManager.default.createFile(atPath: path,
+                                                   contents: data,
+                                                   attributes: nil)
         } catch {
             fatalError(error.localizedDescription)
         }
@@ -151,9 +151,9 @@ extension Maintainer {
             let data = try encoder.encode(cardStatus)
             
             self.prepare(destinationFile: statusFile)
-            FileManager.default.createFile(atPath: statusFile,
-                                           contents: data,
-                                           attributes: nil)
+            let _ = FileManager.default.createFile(atPath: statusFile,
+                                                   contents: data,
+                                                   attributes: nil)
         } catch {
             fatalError(error.localizedDescription)
         }

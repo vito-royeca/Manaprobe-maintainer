@@ -352,7 +352,7 @@ extension Maintainer {
         }
         
         let code = layout
-        var name = capitalize(string: displayFor(name: code))
+        let name = capitalize(string: displayFor(name: code))
         var description_ = "NULL"
         
         switch code {

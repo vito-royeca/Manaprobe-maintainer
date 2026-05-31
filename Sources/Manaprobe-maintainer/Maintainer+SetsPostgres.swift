@@ -119,20 +119,64 @@ extension Maintainer {
     }
     
     func fetchSets() async throws -> [[String: Any]]? {
-        let urlString = "http://managuideapp.com/sets?json=true"
+//        let urlString = "https://managuideapp.com/sets?json=true"
+//        
+//        guard let cleanURL = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+//           let url = URL(string: cleanURL) else {
+//            fatalError("Malformed url")
+//        }
+//        
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "GET"
+//        request.setValue("application/json", forHTTPHeaderField: "Accept")
+//
+//        do {
+//            let (data, _) = try await URLSession.shared.asyncData(for: request)
+//            return try JSONSerialization.jsonObject(with: data) as? [[String: Any]]
+//        } catch {
+//            print(error)
+//            return nil
+//        }
+        var sets: [[String: Any]] = [[String: Any]]()
         
-        guard let cleanURL = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-           let url = URL(string: cleanURL) else {
-            fatalError("Malformed url")
+        let text = "select code, languages, tcgPlayer_id from selectSets()"
+        let statement = try connection.prepareStatement(text: text)
+        defer { statement.close() }
+
+        let cursor = try statement.execute()
+        defer { cursor.close() }
+
+        for row in cursor {
+            let columns = try row.get().columns
+            let code = try columns[0].string()
+            let tcgPlayerId = try columns[2].int()
+            let languages = columns[1].rawValue
+
+            if let languages, !languages.isEmpty {
+                var cleanLanguages = languages.dropFirst().dropLast()
+                    .replacingOccurrences(of: "\\", with: "")
+                    .replacingOccurrences(of: "\"{\"", with: "{\"")
+                    .replacingOccurrences(of: "\"}\"", with: "\"}")
+                cleanLanguages.insert("[", at: cleanLanguages.startIndex)
+                cleanLanguages.insert("]", at: cleanLanguages.endIndex)
+                
+                let data = cleanLanguages.data(using: .utf8)!
+                do {
+                    if let jsonArray = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? [[String: Any]] {
+                        let set: [String : Any] = [
+                            "code": code,
+                            "languages": jsonArray,
+                            "tcgplayer_id": Int32(tcgPlayerId)
+                        ]
+                        sets.append(set)
+                    }
+                } catch let error as NSError {
+                    print(error)
+                }
+            }
         }
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
-        
-        let (data, _) = try await URLSession.shared.asyncData(for: request)
-        
-        return try JSONSerialization.jsonObject(with: data) as? [[String: Any]]
+        return sets
     }
 
     private func keyruneCodes() -> HTMLDocument {

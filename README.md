@@ -1,33 +1,38 @@
-# ManaGuide-maintainer
+# Manaprobe-maintainer
 
-ManaGuide-maintainer is a command line interface (CLI) non-iOS/ mac OS program written in the Swift programming language. It is used to update the database of [Mana Guide](https://github.com/vito-royeca/ManaGuide).
+Manaprobe-maintainer is a command line interface (CLI) non-iOS/ mac OS program written in the Swift programming language. It is used to update the database of [Manaprobe](https://manaprobe.com).
 
 The database backend is PostgreSQL, and [PostgresClientKit](https://github.com/codewinsdotcom/PostgresClientKit) is the client library used to connect to the database.
 
-## Usage
+## Configuration
 
-    $  ManaGuide-maintainer --host <host> --port <port> --database <database> --user <user> --password <password> --full-update <full-update> --imagesPath <imagesPath>
+Create a configuration file `~/.manaprobe-maintaner.config` with the following contents:
 
-    OPTIONS:
-      --host <host>           Database host
-      --port <port>           Database port
-      --database <database>   Database name
-      --user <user>           Database user
-      --password <password>   Database password
-      --full-update <full-update>
-                              Full update: true | false
-      --images-path <images-path>
-                              Card images path                        
-      -h, --help              Show help information. 
+```
+# Database host
+host=<host>
+# Database port
+port=<port>
+# Database name
+database=<database>
+# Database user
+user=<user>
+# Database password
+password=<password>
+# Full update: true | false
+full-update=<full-update>
+# Card images path
+images-path=<images-path> 
+```
 
 ## Building
 
     $ swift build -c release
-    $ cp .build/release/managuide /usr/local/bin/
+    $ cp .build/release/manaprobe-maintainer /usr/local/bin/
 
 ## Author
 
 Vito Royeca
 
-vito.royeca@gmail.com
+https://vitoroyeca.me
 

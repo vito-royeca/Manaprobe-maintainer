@@ -85,8 +85,6 @@ extension Maintainer {
     }
     
     func createFrameEffect(id: String, name: String, description_: String) async throws {
-        let nameSection = sectionFor(name: name) ?? "NULL"
-        
         let query = "SELECT createOrUpdateFrameEffect($1,$2,$3)"
         let parameters = [
             id,

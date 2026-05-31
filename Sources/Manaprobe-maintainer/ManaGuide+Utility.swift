@@ -12,7 +12,6 @@ extension Maintainer {
         if name.count == 0 {
             return nil
         } else {
-            let letters = ["ABCDEFGHIJKLMNOPQRSTUVWXYZ"]
             var prefix = String(name.prefix(1)).uppercased()
             
             if prefix.rangeOfCharacter(from: CharacterSet.letters) == nil {
