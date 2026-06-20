@@ -471,6 +471,15 @@
 		<key>logo_code</key>
 		<string>a15</string>
 	</dict>
+	<key>amsh</key>
+	<dict>
+		<key>keyrune_class</key>
+		<string>msh</string>
+		<key>keyrune_unicode</key>
+		<string>ea1a</string>
+		<key>logo_code</key>
+		<string>a55</string>
+	</dict>
 	<key>ana</key>
 	<dict>
 		<key>keyrune_class</key>
