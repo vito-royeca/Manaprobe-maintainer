@@ -1923,6 +1923,15 @@
 		<key>logo_code</key>
 		<string>mom</string>
 	</dict>
+	<key>fmsc</key>
+	<dict>
+		<key>keyrune_class</key>
+		<string>msc</string>
+		<key>keyrune_unicode</key>
+		<string>ea1f</string>
+		<key>logo_code</key>
+		<string>msc</string>
+	</dict>
 	<key>fnm</key>
 	<dict>
 		<key>keyrune_class</key>
@@ -8180,6 +8189,24 @@
 		<key>logo_code</key>
 		<string>tem</string>
 	</dict>
+	<key>tmsc</key>
+	<dict>
+		<key>keyrune_class</key>
+		<string>msc</string>
+		<key>keyrune_unicode</key>
+		<string>ea1f</string>
+		<key>logo_code</key>
+		<string>msc</string>
+	</dict>
+	<key>tmsh</key>
+	<dict>
+		<key>keyrune_class</key>
+		<string>msh</string>
+		<key>keyrune_unicode</key>
+		<string>ea1a</string>
+		<key>logo_code</key>
+		<string>msh</string>
+	</dict>
 	<key>tmt</key>
 	<dict>
 		<key>keyrune_class</key>
@@ -9313,6 +9340,15 @@
 		<string>e989</string>
 		<key>logo_code</key>
 		<string>a22</string>
+	</dict>
+	<key>ysos</key>
+	<dict>
+		<key>keyrune_class</key>
+		<string>y26</string>
+		<key>keyrune_unicode</key>
+		<string>ea1b</string>
+		<key>logo_code</key>
+		<string>sos</string>
 	</dict>
 	<key>ytdm</key>
 	<dict>
