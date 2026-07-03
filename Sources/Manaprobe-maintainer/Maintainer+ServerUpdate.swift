@@ -6,12 +6,20 @@
 //
 
 extension Maintainer {
-    func processServerUpdate() async throws {
+    func startServerUpdate() async throws {
         let query = "SELECT createServerUpdate($1)"
         let parameters = [isFullUpdate]
         
-        print("processServerUpdate()...")
+        print("startServerUpdate()...")
         try await exec(query: query, with: parameters)
+    }
+    
+    func endServerUpdate() async throws {
+        let query = "SELECT updateServerUpdate()"
+        let parameters = [isFullUpdate]
+        
+        print("endServerUpdate()...")
+        try await exec(query: query)
     }
     
     func processServerReindex() async throws {

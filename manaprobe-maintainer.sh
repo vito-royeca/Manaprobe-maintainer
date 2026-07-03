@@ -4,4 +4,4 @@
 /usr/local/bin/manaprobe-maintainer
 
 # delete temp files
-find /tmp -name "managuide-*" -exec rm -fv {} \;
+find /tmp -name "manaprobe-*" -exec rm -fv {} \;

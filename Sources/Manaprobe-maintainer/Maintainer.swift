@@ -179,9 +179,13 @@ class Maintainer {
         let label = "updateDatabase"
         let dateStart = startActivity(label: label)
         var processes = [() async throws -> Void]()
+        var serverUpdateId = 0
         
+        processes.append({
+            try await self.startServerUpdate()
+        })
         if isFullUpdate {
-            filePrefix         = "managuide-\(Date().timeIntervalSince1970)"
+            filePrefix         = "manaprobe-\(Date().timeIntervalSince1970)"
             bulkDataLocalPath  = "\(cachePath)/\(filePrefix)_\(bulkDataFileName)"
             setsLocalPath      = "\(cachePath)/\(filePrefix)_\(setsFileName)"
             keyruneLocalPath   = "\(cachePath)/\(filePrefix)_\(keyruneFileName)"
@@ -253,13 +257,13 @@ class Maintainer {
             try await self.processPricingData()
         })
         processes.append({
-            try await self.processServerUpdate()
-        })
-        processes.append({
             try await self.processServerReindex()
         })
         processes.append({
             try await self.processServerVacuum()
+        })
+        processes.append({
+            try await self.endServerUpdate()
         })
 
         try await exec(processes: processes)
