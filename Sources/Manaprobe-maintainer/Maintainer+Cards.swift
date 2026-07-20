@@ -334,6 +334,9 @@ extension Maintainer {
         case "qya":
             name = "Quenya"
             nameSection = sectionFor(name: name) ?? "NULL"
+        case "dw":
+            name = "Dwarvish"
+            nameSection = sectionFor(name: name) ?? "NULL"
         default:
             ()
         }
