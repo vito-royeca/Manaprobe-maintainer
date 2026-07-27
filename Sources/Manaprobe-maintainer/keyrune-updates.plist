@@ -6571,6 +6571,11 @@
 		<key>logo_code</key>
 		<string>pmo</string>
 	</dict>
+	<key>sds</key>
+	<dict>
+		<key>logo_code</key>
+		<string>sds</string>
+	</dict>
 	<key>shm</key>
 	<dict>
 		<key>keyrune_class</key>
@@ -8369,6 +8374,11 @@
 		<key>logo_code</key>
 		<string>tpr</string>
 	</dict>
+	<key>trc</key>
+	<dict>
+		<key>logo_code</key>
+		<string>trc</string>
+	</dict>
 	<key>trex</key>
 	<dict>
 		<key>keyrune_class</key>
@@ -8386,6 +8396,11 @@
 		<string>e92f</string>
 		<key>logo_code</key>
 		<string>rix</string>
+	</dict>
+	<key>trk</key>
+	<dict>
+		<key>logo_code</key>
+		<string>trk</string>
 	</dict>
 	<key>trna</key>
 	<dict>
@@ -8602,6 +8617,11 @@
 		<string>ea06</string>
 		<key>logo_code</key>
 		<string>tmt</string>
+	</dict>
+	<key>ttrk</key>
+	<dict>
+		<key>logo_code</key>
+		<string>trk</string>
 	</dict>
 	<key>ttsr</key>
 	<dict>
