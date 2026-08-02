@@ -319,19 +319,19 @@ class Maintainer {
                     if let value = v as? String {
                         switch value {
                         case "All Cards":
-                            if let downloadURI = dict["download_uri"] as? String {
+                            if let downloadURI = dict["jsonl_download_uri"] as? String {
                                 cardsRemotePath = downloadURI
                                 
                                 if let last = cardsRemotePath.components(separatedBy: "/").last {
-                                    cardsLocalPath = "\(cachePath)/managuide-\(last)"
+                                    cardsLocalPath = "\(cachePath)/manaprobe-\(last)"
                                 }
                             }
                         case "Rulings":
-                            if let downloadURI = dict["download_uri"] as? String {
+                            if let downloadURI = dict["jsonl_download_uri"] as? String {
                                 rulingsRemotePath = downloadURI
                                 
                                 if let last = rulingsRemotePath.components(separatedBy: "/").last {
-                                    rulingsLocalPath = "\(cachePath)/managuide-\(last)"
+                                    rulingsLocalPath = "\(cachePath)/manaprobe-\(last)"
                                 }
                             }
                         default:
