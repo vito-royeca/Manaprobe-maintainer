@@ -60,17 +60,23 @@ extension Maintainer {
                 cleanLine.removeLast()
             }
             
-            guard cleanLine.hasPrefix("{\""),
-                let data = cleanLine.data(using: .utf16),
-                let dict = try! JSONSerialization.jsonObject(with: data,
-                                                             options: .mutableContainers) as? [String: Any] else {
-                continue
-            }
-            
-            array.append(dict)
-            
-            if array.count == lines {
-                break
+            do {
+                guard cleanLine.hasPrefix("{\""),
+                      let data = cleanLine.data(using: .utf16),
+                      let dict = try JSONSerialization.jsonObject(with: data,
+                                                                  options: .mutableContainers) as? [String: Any] else {
+                    continue
+                }
+                
+                array.append(dict)
+                
+                if array.count == lines {
+                    break
+                }
+            } catch {
+                print("readFileData(::): \(error)")
+                print("\(line)")
+                print("------------")
             }
         }
         
