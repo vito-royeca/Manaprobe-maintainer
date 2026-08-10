@@ -19,6 +19,7 @@ let package = Package(
         .package(url: "https://github.com/tid-kijyun/Kanna", from: "6.1.0"),
         .package(url: "https://github.com/codewinsdotcom/PostgresClientKit", from: "1.5.0"),
         .package(url: "https://github.com/swiftpackages/DotEnv.git", from: "3.0.0"),
+        .package(url: "https://github.com/1024jp/GzipSwift", from: "7.0.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -27,6 +28,7 @@ let package = Package(
             name: "Manaprobe-maintainer",
             dependencies: [
                 .product(name: "DotEnv", package: "DotEnv"),
+                .product(name: "Gzip", package: "GzipSwift"),
                 "Kanna",
                 "PostgresClientKit",
             ],
@@ -37,6 +39,7 @@ let package = Package(
             dependencies: [
                 "Manaprobe-maintainer",
                 .product(name: "DotEnv", package: "DotEnv"),
+                .product(name: "Gzip", package: "GzipSwift"),
                 "Kanna",
                 "PostgresClientKit",
             ]

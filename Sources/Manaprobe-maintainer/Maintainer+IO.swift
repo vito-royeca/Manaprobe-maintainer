@@ -9,9 +9,7 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
-//#if canImport(zlib)
-import zlib
-//#endif
+import Gzip
 
 extension Maintainer {
     func processFile(label: String,
@@ -213,55 +211,68 @@ extension Maintainer {
     }
     
     func decompressGzipFile(at sourceURL: URL, to destinationURL: URL) throws {
-        let sourceData = try Data(contentsOf: sourceURL)
+//        let sourceData = try Data(contentsOf: sourceURL)
+//        
+//        if let decompressed = decompress(data: sourceData) {
+//            try decompressed.write(to: destinationURL)
+//        }
         
-        if let decompressed = decompress(data: sourceData) {
-            try decompressed.write(to: destinationURL)
+        let sourceData = try Data(contentsOf: sourceURL)
+        var decompressedData: Data? = nil
+        
+        if sourceData.isGzipped {
+            decompressedData = try sourceData.gunzipped()
+        } else {
+            decompressedData = sourceData
+        }
+        
+        if let decompressedData {
+            try decompressedData.write(to: destinationURL)
         }
     }
     
-    func decompress(data: Data) -> Data? {
-        var stream = z_stream()
-        var status: Int32
-
-        // Gzip support: windowBits = 16 + MAX_WBITS
-        status = inflateInit2_(&stream, 16 + MAX_WBITS, ZLIB_VERSION, Int32(MemoryLayout<z_stream>.size))
-        guard status == Z_OK else {
-            print("inflateInit2_ failed with code: \(status)")
-            return nil
-        }
-
-        defer { inflateEnd(&stream) }
-
-        var decompressed = Data()
-        data.withUnsafeBytes { (inputPtr: UnsafeRawBufferPointer) in
-            guard let inputBase = inputPtr.baseAddress?.assumingMemoryBound(to: Bytef.self) else { return }
-            stream.next_in = UnsafeMutablePointer<Bytef>(mutating: inputBase)
-            stream.avail_in = uInt(data.count)
-
-            let bufferSize = 64 * 1024
-            var output = [UInt8](repeating: 0, count: bufferSize)
-
-            repeat {
-                output.withUnsafeMutableBytes { outputPtr in
-                    guard let outputBase = outputPtr.baseAddress?.assumingMemoryBound(to: Bytef.self) else { return }
-                    stream.next_out = outputBase
-                    stream.avail_out = uInt(bufferSize)
-
-                    status = inflate(&stream, Z_NO_FLUSH)
-                    let have = bufferSize - Int(stream.avail_out)
-                    if have > 0 {
-                        decompressed.append(outputBase, count: have)
-                    }
-                }
-            } while status == Z_OK
-        }
-
-        if status != Z_STREAM_END {
-            print("inflate failed with code: \(status)")
-            return nil
-        }
-
-        return decompressed
-    }
+//    func decompress(data: Data) -> Data? {
+//        var stream = z_stream()
+//        var status: Int32
+//
+//        // Gzip support: windowBits = 16 + MAX_WBITS
+//        status = inflateInit2_(&stream, 16 + MAX_WBITS, ZLIB_VERSION, Int32(MemoryLayout<z_stream>.size))
+//        guard status == Z_OK else {
+//            print("inflateInit2_ failed with code: \(status)")
+//            return nil
+//        }
+//
+//        defer { inflateEnd(&stream) }
+//
+//        var decompressed = Data()
+//        data.withUnsafeBytes { (inputPtr: UnsafeRawBufferPointer) in
+//            guard let inputBase = inputPtr.baseAddress?.assumingMemoryBound(to: Bytef.self) else { return }
+//            stream.next_in = UnsafeMutablePointer<Bytef>(mutating: inputBase)
+//            stream.avail_in = uInt(data.count)
+//
+//            let bufferSize = 64 * 1024
+//            var output = [UInt8](repeating: 0, count: bufferSize)
+//
+//            repeat {
+//                output.withUnsafeMutableBytes { outputPtr in
+//                    guard let outputBase = outputPtr.baseAddress?.assumingMemoryBound(to: Bytef.self) else { return }
+//                    stream.next_out = outputBase
+//                    stream.avail_out = uInt(bufferSize)
+//
+//                    status = inflate(&stream, Z_NO_FLUSH)
+//                    let have = bufferSize - Int(stream.avail_out)
+//                    if have > 0 {
+//                        decompressed.append(outputBase, count: have)
+//                    }
+//                }
+//            } while status == Z_OK
+//        }
+//
+//        if status != Z_STREAM_END {
+//            print("inflate failed with code: \(status)")
+//            return nil
+//        }
+//
+//        return decompressed
+//    }
 }
