@@ -9,9 +9,9 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
-#if canImport(zlib)
+//#if canImport(zlib)
 import zlib
-#endif
+//#endif
 
 extension Maintainer {
     func processFile(label: String,
