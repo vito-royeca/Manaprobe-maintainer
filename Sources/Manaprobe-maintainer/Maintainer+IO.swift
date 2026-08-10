@@ -8,8 +8,6 @@
 import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
-import System
-import SystemPackage
 #endif
 #if canImport(zlib)
 import zlib
