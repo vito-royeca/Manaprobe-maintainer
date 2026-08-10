@@ -16,7 +16,6 @@ extension Maintainer {
     
     func endServerUpdate() async throws {
         let query = "SELECT updateServerUpdate()"
-        let parameters = [isFullUpdate]
         
         print("endServerUpdate()...")
         try await exec(query: query)

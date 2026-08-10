@@ -40,7 +40,9 @@ extension Maintainer {
             return processes
         }
         
-        try await processCards(label: label, callback: callback)
+        try await processFile(label: label,
+                              localPath: Resource.cards.localPath(cachePath, filePrefix),
+                              callback: callback)
         endActivity(label: label, from: date)
     }
     

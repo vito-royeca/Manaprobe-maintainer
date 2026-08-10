@@ -12,6 +12,7 @@ extension Maintainer {
     func processSetsData() async throws {
         let label = "processSetsData"
         let date = startActivity(label: label)
+        let setsArray = setsData()
         var processes = [() async throws -> Void]()
         
         processes.append(contentsOf: filterSetBlocks(array: setsArray))
@@ -23,7 +24,7 @@ extension Maintainer {
     }
     
     func setsData() -> [[String: Any]] {
-        let setsPath = "\(cachePath)/\(filePrefix)_\(setsFileName)"
+        let setsPath = "\(cachePath)/\(filePrefix)_scryfall-sets.json"
         
         let data = try! Data(contentsOf: URL(fileURLWithPath: setsPath))
         guard let dict = try! JSONSerialization.jsonObject(with: data,
@@ -33,7 +34,6 @@ extension Maintainer {
         guard let array = dict["data"] as? [[String: Any]] else {
             fatalError("Malformed data")
         }
-        
         return array
     }
 

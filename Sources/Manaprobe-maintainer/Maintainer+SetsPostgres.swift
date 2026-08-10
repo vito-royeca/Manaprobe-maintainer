@@ -180,8 +180,8 @@ extension Maintainer {
     }
 
     private func keyruneCodes() -> HTMLDocument {
-        let keyrunePath = "\(cachePath)/\(filePrefix)_\(keyruneFileName)"
-        let url = URL(fileURLWithPath: keyrunePath)
+        let path = Resource.keyrunes.localPath(cachePath, filePrefix)
+        let url = URL(fileURLWithPath: path)
         
         return try! HTML(url: url, encoding: .utf8)
     }

@@ -12,6 +12,7 @@ extension Maintainer {
     func processComprehensiveRulesData() async throws {
         let label = "processComprehensiveRulesData"
         let date = self.startActivity(label: label)
+        let rulesArray = rulesData()
         var processes = [() async throws -> Void]()
         
         processes.append({
@@ -24,7 +25,8 @@ extension Maintainer {
     }
 
     func rulesData() -> [String] {
-        let data = try! String(contentsOfFile: rulesLocalPath, encoding: .ascii)
+        let path = Resource.rules.localPath(cachePath, filePrefix)
+        let data = try! String(contentsOfFile: path, encoding: .ascii)
         let lines = data.components(separatedBy: .newlines)
         
         return lines

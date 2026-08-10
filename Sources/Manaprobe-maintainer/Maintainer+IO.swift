@@ -8,14 +8,20 @@
 import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
+import System
+import SystemPackage
+#endif
+#if canImport(zlib)
+import zlib
 #endif
 
 extension Maintainer {
-    func processCards(label: String,
-                      callback: ([[String: Any]]) -> [() async throws -> Void]) async throws {
-        let fileReader = StreamingFileReader(path: cardsLocalPath)
-        let path = "\(cachePath)/managuide-\(label).json"
-        var cards = [[String: Any]]()
+    func processFile(label: String,
+                     localPath: String,
+                     callback: ([[String: Any]]) -> [() async throws -> Void]) async throws {
+        let fileReader = StreamingFileReader(path: localPath)
+        let path = "\(cachePath)/manaprobe-\(label).json"
+        var array = [[String: Any]]()
         var offset = 0
 
         repeat {
@@ -30,12 +36,12 @@ extension Maintainer {
                 seeking = true
             }
             
-            cards = readFileData(fileReader: fileReader, lines: printMilestone)
-            let processes = callback(cards)
+            array = readFileData(fileReader: fileReader, lines: printMilestone)
+            let processes = callback(array)
             try await exec(processes: processes)
             
-            offset = seeking ? milestone.value : offset + cards.count
-            milestone.value += cards.count
+            offset = seeking ? milestone.value : offset + array.count
+            milestone.value += array.count
             milestone.fileOffset = fileReader.offset
             writeMilestone(milestone, at: path)
             
@@ -43,11 +49,11 @@ extension Maintainer {
             let timeDifference = endDate.timeIntervalSince(startDate)
             print("\(label): \(offset) Elapsed time: \(format(timeDifference))")
 
-        } while !cards.isEmpty
+        } while !array.isEmpty
         
         try FileManager.default.removeItem(atPath: path)
     }
-    
+
     func readFileData(fileReader: StreamingFileReader, lines: Int) -> [[String: Any]] {
         var array = [[String: Any]]()
         
@@ -75,18 +81,32 @@ extension Maintainer {
         return array
     }
 
-    func fetchData(from remotePath: String, saveTo localPath: String) async throws {
+    func fetchData(from remotePath: String, saveTo localPath: String, unpack: Bool = false) async throws {
         guard !FileManager.default.fileExists(atPath: localPath) else {
             return
         }
             
         guard let urlString = remotePath.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-            let url = URL(string: urlString) else {
+            let remoteURL = URL(string: urlString),
+            let localURL = URL(string: "file://\(localPath)") else {
             fatalError("Malformed url")
         }
 
-        let (localURL, _) = try await URLSession.shared.asyncDownload(from: url)
-        try FileManager.default.moveItem(atPath: localURL.path, toPath: localPath)
+        do {
+            let (tempURL, _) = try await URLSession.shared.asyncDownload(from: remoteURL)
+            
+            if FileManager.default.fileExists(atPath: tempURL.path()) {
+                if unpack {
+                    try decompressGzipFile(at: tempURL, to: localURL)
+//                    try FileManager.default.removeItem(at: tempURL)
+                } else {
+                    try FileManager.default.moveItem(at: tempURL, to: localURL)
+                }
+            }
+            
+        } catch {
+            print("\(error)")
+        }
     }
 
     func readMilestone(at path: String) -> Milestone {
@@ -192,5 +212,58 @@ extension Maintainer {
         
         print("\(label) ended   on: \(localFormat(endDate))")
         print("Elapsed time: \(format(timeDifference))\n")
+    }
+    
+    func decompressGzipFile(at sourceURL: URL, to destinationURL: URL) throws {
+        let sourceData = try Data(contentsOf: sourceURL)
+        
+        if let decompressed = decompress(data: sourceData) {
+            try decompressed.write(to: destinationURL)
+        }
+    }
+    
+    func decompress(data: Data) -> Data? {
+        var stream = z_stream()
+        var status: Int32
+
+        // Gzip support: windowBits = 16 + MAX_WBITS
+        status = inflateInit2_(&stream, 16 + MAX_WBITS, ZLIB_VERSION, Int32(MemoryLayout<z_stream>.size))
+        guard status == Z_OK else {
+            print("inflateInit2_ failed with code: \(status)")
+            return nil
+        }
+
+        defer { inflateEnd(&stream) }
+
+        var decompressed = Data()
+        data.withUnsafeBytes { (inputPtr: UnsafeRawBufferPointer) in
+            guard let inputBase = inputPtr.baseAddress?.assumingMemoryBound(to: Bytef.self) else { return }
+            stream.next_in = UnsafeMutablePointer<Bytef>(mutating: inputBase)
+            stream.avail_in = uInt(data.count)
+
+            let bufferSize = 64 * 1024
+            var output = [UInt8](repeating: 0, count: bufferSize)
+
+            repeat {
+                output.withUnsafeMutableBytes { outputPtr in
+                    guard let outputBase = outputPtr.baseAddress?.assumingMemoryBound(to: Bytef.self) else { return }
+                    stream.next_out = outputBase
+                    stream.avail_out = uInt(bufferSize)
+
+                    status = inflate(&stream, Z_NO_FLUSH)
+                    let have = bufferSize - Int(stream.avail_out)
+                    if have > 0 {
+                        decompressed.append(outputBase, count: have)
+                    }
+                }
+            } while status == Z_OK
+        }
+
+        if status != Z_STREAM_END {
+            print("inflate failed with code: \(status)")
+            return nil
+        }
+
+        return decompressed
     }
 }
