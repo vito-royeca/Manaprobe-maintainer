@@ -44,7 +44,7 @@ enum Resource: Equatable, Hashable, Identifiable, CaseIterable {
         case .rulings: "https://api.scryfall.com/bulk-data/rulings"
         case .sets: "https://api.scryfall.com/sets"
         case .keyrunes: "https://keyrune.andrewgioia.com/cheatsheet.html"
-        case .rules: "https://media.wizards.com/2025/downloads/MagicCompRules%2020250404.txt"
+        case .rules: "https://media.wizards.com/2026/downloads/MagicCompRules 20260819.txt"
         case .migrations: "https://api.scryfall.com/migrations?page=1"
         }
     }

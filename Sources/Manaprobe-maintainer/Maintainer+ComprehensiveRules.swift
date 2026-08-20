@@ -26,7 +26,7 @@ extension Maintainer {
 
     func rulesData() -> [String] {
         let path = Resource.rules.localPath(cachePath, filePrefix)
-        let data = try! String(contentsOfFile: path, encoding: .ascii)
+        let data = try! String(contentsOfFile: path, encoding: .utf8)
         let lines = data.components(separatedBy: .newlines)
         
         return lines
@@ -36,8 +36,8 @@ extension Maintainer {
         var rules = [[String: Any]]()
         var id = 0
         
-        var startLine: String? = nil
-        var endLine: String? = nil
+        var startLine = ""
+        var endLine = ""
         var includeStartLine = false
         var includeEndLine = false
         
@@ -53,8 +53,8 @@ extension Maintainer {
         includeEndLine = false
         id = id + 1
         if let text = parseData(fromLines: lines,
-                                startLine: startLine!,
-                                endLine: endLine!,
+                                startLine: startLine,
+                                endLine: endLine,
                                 includeStartLine: includeStartLine,
                                 includeEndLine: includeEndLine) {
             rules.append(["definition": text,
@@ -83,12 +83,12 @@ extension Maintainer {
                       "id": id])
         
         startLine = "Magic: The Gathering Original Game Design: Richard Garfield"
-        endLine = "Published by Wizards of the Coast LLC"
+        endLine = "© 2026 Viacom International Inc."
         includeStartLine = true
         includeEndLine = true
         if let text = parseData(fromLines: lines,
-                                startLine: startLine!,
-                                endLine: endLine!,
+                                startLine: startLine,
+                                endLine: endLine,
                                 includeStartLine: includeStartLine,
                                 includeEndLine: includeEndLine) {
             rules.append(["definition": text,
