@@ -87,7 +87,10 @@ extension Maintainer {
     }
     
     func updatedKeyruneCodes() -> [[String: String]] {
-        let document = keyruneCodes()
+        guard let document = keyruneCodes() else {
+            return []
+        }
+
         var keyrunes = [String: [String: String]]()
         
         for div in document.xpath("//div[@class='vectors']") {
@@ -179,11 +182,17 @@ extension Maintainer {
         return sets
     }
 
-    private func keyruneCodes() -> HTMLDocument {
-        let path = Resource.keyrunes.localPath(cachePath, filePrefix)
-        let url = URL(fileURLWithPath: path)
+    private func keyruneCodes() -> HTMLDocument? {
+        guard let remoteUrl = URL(string: Resource.rulings.remotePath) else {
+            return nil
+        }
         
-        return try! HTML(url: url, encoding: .utf8)
+        do {
+            return try HTML(url: remoteUrl, encoding: .utf8)
+        } catch {
+            print(error)
+        }
+        return nil
     }
     
     private func keyruneUpdates() -> [String: [String: String]] {

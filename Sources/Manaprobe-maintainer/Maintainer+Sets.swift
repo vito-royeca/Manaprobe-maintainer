@@ -107,7 +107,6 @@ extension Maintainer {
     }
     
     func downloadSetLogos() async throws {
-        
         let label = "downloadSetLogos"
         let date = startActivity(label: label)
         let setsPath = imagesPath.replacingOccurrences(of: "cards", with: "sets")
@@ -120,7 +119,7 @@ extension Maintainer {
                 let destSmall = "\(setsPath)/\(logoCode)_small.png"
                 if !FileManager.default.fileExists(atPath: destSmall) {
                     print(destSmall)
-                    let sourceSmall = "https://www.mtgpics.com/graph/sets/logos/" + logoCode + ".png"
+                    let sourceSmall = "\(Resource.mtgPics.remotePath)/graph/sets/logos/" + logoCode + ".png"
                     self.prepare(destinationFile: destSmall)
                     processes.append({
                         try await self.fetchData(from: sourceSmall, saveTo: destSmall)
@@ -130,7 +129,7 @@ extension Maintainer {
                 let destBig = "\(setsPath)/\(logoCode)_big.png"
                 if !FileManager.default.fileExists(atPath: destBig) {
                     print(destBig)
-                    let sourceBig = "https://www.mtgpics.com/graph/sets/logos_big/" + logoCode + ".png"
+                    let sourceBig = "\(Resource.mtgPics.remotePath)/graph/sets/logos_big/" + logoCode + ".png"
                     self.prepare(destinationFile: destBig)
                     processes.append({
                         try await self.fetchData(from: sourceBig, saveTo: destBig)

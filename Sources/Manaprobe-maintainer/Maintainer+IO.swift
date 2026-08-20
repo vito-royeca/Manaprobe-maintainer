@@ -83,8 +83,11 @@ extension Maintainer {
         return array
     }
 
-    func fetchData(from remotePath: String, saveTo localPath: String, unpack: Bool = false) async throws {
-        guard !FileManager.default.fileExists(atPath: localPath) else {
+    func fetchData(from remotePath: String,
+                   saveTo localPath: String?,
+                   unpack: Bool = false) async throws {
+        guard let localPath,
+            !FileManager.default.fileExists(atPath: localPath) else {
             return
         }
             

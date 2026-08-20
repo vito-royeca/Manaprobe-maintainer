@@ -21,6 +21,10 @@ struct CardStatus : Codable {
 
 extension Maintainer {
     func fetchCardImages() async throws {
+        guard let localPath = Resource.cards.localPath(cachePath, filePrefix) else {
+            return
+        }
+
         let label = "fetchCardImages"
         let date = startActivity(label: label)
         let callback: ([[String: Any]]) -> [() async throws -> Void] = { cards in
@@ -33,7 +37,7 @@ extension Maintainer {
         }
         
         try await processFile(label: label,
-                              localPath: Resource.cards.localPath(cachePath, filePrefix),
+                              localPath: localPath,
                               callback: callback)
         endActivity(label: label, from: date)
     }

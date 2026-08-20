@@ -9,6 +9,10 @@ import Foundation
 
 extension Maintainer {
     func processRulingsData() async throws {
+        guard let localPath = Resource.rulings.localPath(cachePath, filePrefix) else {
+            return
+        }
+
         let label = "processRulingsData"
         let date = startActivity(label: label)
         var processes = [() async throws -> Void]()
@@ -31,13 +35,13 @@ extension Maintainer {
         
         try await exec(processes: processes)
         try await processFile(label: label,
-                              localPath: Resource.rulings.localPath(cachePath, filePrefix),
+                              localPath: localPath,
                               callback: callback)
         
         endActivity(label: label, from: date)
     }
     
-    func rulingsData() -> [[String: Any]] {
+    private func rulingsData() -> [[String: Any]] {
         let data = try! Data(contentsOf: URL(fileURLWithPath: path))
         guard let array = try! JSONSerialization.jsonObject(with: data,
                                                             options: .mutableContainers) as? [[String: Any]] else {

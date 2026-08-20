@@ -14,6 +14,10 @@ enum CardsDataType {
 
 extension Maintainer {
     func processCardsData(type: CardsDataType) async throws {
+        guard let localPath = Resource.cards.localPath(cachePath, filePrefix) else {
+            return
+        }
+
         let label = switch type {
         case .misc:
             "createMiscData"
@@ -41,7 +45,7 @@ extension Maintainer {
         }
         
         try await processFile(label: label,
-                              localPath: Resource.cards.localPath(cachePath, filePrefix),
+                              localPath: localPath,
                               callback: callback)
         endActivity(label: label, from: date)
     }

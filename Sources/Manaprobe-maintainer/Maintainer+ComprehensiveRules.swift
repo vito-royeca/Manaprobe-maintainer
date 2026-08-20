@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Kanna
 import PostgresClientKit
 
 extension Maintainer {
@@ -25,13 +26,37 @@ extension Maintainer {
     }
 
     func rulesData() -> [String] {
-        let path = Resource.rules.localPath(cachePath, filePrefix)
-        let data = try! String(contentsOfFile: path, encoding: .utf8)
-        let lines = data.components(separatedBy: .newlines)
+        guard let url = rulesURL() else {
+            return []
+        }
         
+        let data = try! String(contentsOf: url, encoding: .utf8)
+        let lines = data.components(separatedBy: .newlines)
         return lines
     }
-    
+
+    private func rulesURL() -> URL? {
+        guard let remoteUrl = URL(string: Resource.rules.remotePath) else {
+            return nil
+        }
+        
+        do {
+            let document = try HTML(url: remoteUrl, encoding: .utf8)
+            
+            for a in document.xpath("//a[@class='cta']") {
+                if let href = a["href"] {
+                    if href.contains("MagicCompRules") && href.hasSuffix(".txt") {
+                        return URL(string: href)
+                    }
+                }
+            }
+        } catch {
+            print(error)
+        }
+        
+        return nil
+    }
+
     func filterRules(lines: [String]) -> [() async throws -> Void] {
         var rules = [[String: Any]]()
         var id = 0

@@ -15,6 +15,7 @@ enum Resource: Equatable, Hashable, Identifiable, CaseIterable {
     case keyrunes
     case rules
     case migrations
+    case mtgPics
     
     var id: Int {
         switch self {
@@ -24,17 +25,17 @@ enum Resource: Equatable, Hashable, Identifiable, CaseIterable {
         case .keyrunes: 1003
         case .rules: 1004
         case .migrations: 1005
+        case .mtgPics: 1006
         }
     }
     
-    var fileName: String {
+    var fileName: String? {
         switch self {
         case .cards: "scryfall-all-cards.jsonl"
         case .rulings: "scryfall-rulings.jsonl"
         case .sets: "scryfall-sets.json"
-        case .keyrunes: "keyrune.html"
-        case .rules: "MagicCompRules.txt"
         case .migrations: "scryfall-migration.json"
+        default: nil
         }
     }
     
@@ -44,13 +45,16 @@ enum Resource: Equatable, Hashable, Identifiable, CaseIterable {
         case .rulings: "https://api.scryfall.com/bulk-data/rulings"
         case .sets: "https://api.scryfall.com/sets"
         case .keyrunes: "https://keyrune.andrewgioia.com/cheatsheet.html"
-        case .rules: "https://media.wizards.com/2026/downloads/MagicCompRules 20260819.txt"
+        case .rules: "https://magic.wizards.com/en/rules"
         case .migrations: "https://api.scryfall.com/migrations?page=1"
+        case .mtgPics: "https://www.mtgpics.com"
         }
     }
     
-    func localPath(_ cachePath: String, _ localPrefix: String) -> String {
-        "\(cachePath)/\(localPrefix)_\(fileName)"
+    func localPath(_ cachePath: String, _ localPrefix: String) -> String? {
+        guard let fileName else { return nil }
+        
+        return "\(cachePath)/\(localPrefix)_\(fileName)"
     }
 }
 
@@ -64,10 +68,6 @@ extension Maintainer {
                                      saveTo: Resource.sets.localPath(self.cachePath, self.filePrefix))
         })
         processes.append({
-            try await self.fetchData(from: Resource.keyrunes.remotePath,
-                                     saveTo: Resource.keyrunes.localPath(self.cachePath, self.filePrefix))
-        })
-        processes.append({
             try await self.fetchData(from: self.getDownloadURI(resource: .cards),
                                      saveTo: Resource.cards.localPath(self.cachePath, self.filePrefix),
                                      unpack: true)
@@ -76,10 +76,6 @@ extension Maintainer {
             try await self.fetchData(from: self.getDownloadURI(resource: .rulings),
                                      saveTo: Resource.rulings.localPath(self.cachePath, self.filePrefix),
                                      unpack: true)
-        })
-        processes.append({
-            try await self.fetchData(from: Resource.rules.remotePath,
-                                     saveTo: Resource.rules.localPath(self.cachePath, self.filePrefix))
         })
         processes.append({
             try await self.downloadSetLogos()
@@ -114,12 +110,12 @@ extension Maintainer {
         processes.append({
             try await self.processComprehensiveRulesData()
         })
-        processes.append({
-            try await self.processMigrationsData()
-        })
-        processes.append({
-            try await self.processMaterializedViews()
-        })
+//        processes.append({
+//            try await self.processMigrationsData()
+//        })
+//        processes.append({
+//            try await self.processMaterializedViews()
+//        })
         
         return processes
     }
@@ -127,9 +123,8 @@ extension Maintainer {
     func cleanResources() {
         do {
             for reource in Resource.allCases {
-                let path = reource.localPath(cachePath, filePrefix)
-
-                if FileManager.default.fileExists(atPath: path) {
+                if let path = reource.localPath(cachePath, filePrefix),
+                   FileManager.default.fileExists(atPath: path) {
                     try FileManager.default.removeItem(atPath: path)
                 }
             }
