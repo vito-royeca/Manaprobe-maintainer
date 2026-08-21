@@ -68,7 +68,6 @@ extension Maintainer {
         
         // Introduction
         rules.append(["term": "Introduction",
-                      "order": 0,
                       "id": id])
         
         // Greetings
@@ -83,7 +82,6 @@ extension Maintainer {
                                 includeStartLine: includeStartLine,
                                 includeEndLine: includeEndLine) {
             rules.append(["definition": text,
-                          "order": 0.1,
                           "parent": 0,
                           "id": id])
         }
@@ -95,7 +93,6 @@ extension Maintainer {
         // Glossary
         id = rules.count + 2
         rules.append(["term": "Glossary",
-                      "order": 10000.0,
                       "id": id])
         rules.append(contentsOf: parseGlossary(fromLines: lines,
                                                startId: id,
@@ -104,7 +101,6 @@ extension Maintainer {
         // Credits
         id = rules.count + 2
         rules.append(["term": "Credits",
-                      "order": 11000.0,
                       "id": id])
         
         startLine = "Magic: The Gathering Original Game Design: Richard Garfield"
@@ -117,7 +113,6 @@ extension Maintainer {
                                 includeStartLine: includeStartLine,
                                 includeEndLine: includeEndLine) {
             rules.append(["definition": text,
-                          "order": 11000.1,
                           "parent": id,
                           "id": id + 2])
         }
@@ -140,15 +135,13 @@ extension Maintainer {
         let term = dict["term"] as? String ?? "NULL"
         let termSection = dict["termSection"] as? String ?? "NULL"
         let definition = dict["definition"] as? String ?? "NULL"
-        let order = dict["order"] as? Double ?? Double(0)
         let parent = dict["parent"] as? Int ?? Int(-1)
         let id = dict["id"] as? Int ?? Int(0)
-        let query = "SELECT createOrUpdateRule($1,$2,$3,$4,$5,$6)"
+        let query = "SELECT createOrUpdateRule($1,$2,$3,$4,$5)"
         let parameters = [
             term,
             termSection,
             definition,
-            order,
             parent,
             id
         ] as [Any]
@@ -250,7 +243,6 @@ extension Maintainer {
                     var rule = [
                         "term": term,
                         "definition": definition.replacingOccurrences(of: "“", with: "\""),
-                        "order": order(of: term),
                         "id": id
                     ] as [String: Any]
                     

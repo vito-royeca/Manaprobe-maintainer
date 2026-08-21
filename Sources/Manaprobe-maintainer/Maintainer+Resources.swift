@@ -110,12 +110,12 @@ extension Maintainer {
         processes.append({
             try await self.processComprehensiveRulesData()
         })
-//        processes.append({
-//            try await self.processMigrationsData()
-//        })
-//        processes.append({
-//            try await self.processMaterializedViews()
-//        })
+        processes.append({
+            try await self.processMigrationsData()
+        })
+        processes.append({
+            try await self.processMaterializedViews()
+        })
         
         return processes
     }
