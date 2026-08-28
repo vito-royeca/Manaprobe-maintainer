@@ -6680,6 +6680,11 @@
 		<key>logo_code</key>
 		<string>slx</string>
 	</dict>
+	<key>slz</key>
+	<dict>
+		<key>logo_code</key>
+		<string>slz</string>
+	</dict>
 	<key>smh3</key>
 	<dict>
 		<key>keyrune_class</key>
