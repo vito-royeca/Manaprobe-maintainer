@@ -7673,6 +7673,15 @@
 		<key>logo_code</key>
 		<string>fin</string>
 	</dict>
+	<key>tfra</key>
+	<dict>
+		<key>keyrune_class</key>
+		<string>fra</string>
+		<key>keyrune_unicode</key>
+		<string>ea22</string>
+		<key>logo_code</key>
+		<string>fra</string>
+	</dict>
 	<key>tfrf</key>
 	<dict>
 		<key>keyrune_class</key>
