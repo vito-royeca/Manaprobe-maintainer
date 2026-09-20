@@ -1833,6 +1833,15 @@
 		<key>logo_code</key>
 		<string>dmu</string>
 	</dict>
+	<key>fdc</key>
+	<dict>
+		<key>keyrune_class</key>
+		<string>fdc</string>
+		<key>keyrune_unicode</key>
+		<string>e9e4</string>
+		<key>logo_code</key>
+		<string>fdc</string>
+	</dict>
 	<key>fdn</key>
 	<dict>
 		<key>keyrune_class</key>
@@ -7646,6 +7655,15 @@
 		<key>logo_code</key>
 		<string>dda</string>
 	</dict>
+	<key>tfdc</key>
+	<dict>
+		<key>keyrune_class</key>
+		<string>fdc</string>
+		<key>keyrune_unicode</key>
+		<string>e9e4</string>
+		<key>logo_code</key>
+		<string>fdc</string>
+	</dict>
 	<key>tfdn</key>
 	<dict>
 		<key>keyrune_class</key>
@@ -7681,6 +7699,15 @@
 		<string>ea22</string>
 		<key>logo_code</key>
 		<string>fra</string>
+	</dict>
+	<key>tfrc</key>
+	<dict>
+		<key>keyrune_class</key>
+		<string>fra</string>
+		<key>keyrune_unicode</key>
+		<string>ea22</string>
+		<key>logo_code</key>
+		<string>frc</string>
 	</dict>
 	<key>tfrf</key>
 	<dict>
