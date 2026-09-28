@@ -4595,6 +4595,15 @@
 		<key>logo_code</key>
 		<string>pmo</string>
 	</dict>
+	<key>pf27</key>
+	<dict>
+		<key>keyrune_class</key>
+		<string>pmei</string>
+		<key>keyrune_unicode</key>
+		<string>e687</string>
+		<key>logo_code</key>
+		<string>pmo</string>
+	</dict>
 	<key>pfdn</key>
 	<dict>
 		<key>keyrune_class</key>
