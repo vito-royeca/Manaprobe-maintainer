@@ -2999,6 +2999,16 @@
 		<key>logo_code</key>
 		<string>med</string>
 	</dict>
+	<key>mdc</key>
+	<dict>
+		<key>logo_code</key>
+		<string>mdc</string>
+	</dict>
+	<key>mdd</key>
+	<dict>
+		<key>logo_code</key>
+		<string>mdd</string>
+	</dict>
 	<key>mdmu</key>
 	<dict>
 		<key>keyrune_class</key>
@@ -8131,6 +8141,11 @@
 		<string>e682</string>
 		<key>logo_code</key>
 		<string>med</string>
+	</dict>
+	<key>tmdd</key>
+	<dict>
+		<key>logo_code</key>
+		<string>mdd</string>
 	</dict>
 	<key>tmed</key>
 	<dict>
