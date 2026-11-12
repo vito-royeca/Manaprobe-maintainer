@@ -1,6 +1,6 @@
 //
 //  Maintainer+TCGPlayer.swift
-//  ManaGuide-maintainer
+//  Manaprobe-maintainer
 //
 //  Created by Vito Royeca on 23/10/2018.
 //
@@ -9,7 +9,16 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
+import AsyncHTTPClient
 import PostgresClientKit
+import NIOCore
+import NIOFoundationCompat
+
+struct TcgPlayerPayload: Encodable {
+    let grantType: String
+    let clientId: String
+    let clientSecret: String
+}
 
 extension Maintainer {
     func processPricingData() async throws {
@@ -43,52 +52,107 @@ extension Maintainer {
     func getTcgPlayerToken() async throws {
         let urlString = "https://api.tcgplayer.com/token"
         
-        guard let cleanUrl = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-           let url = URL(string: cleanUrl) else {
+        guard let cleanUrl = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             fatalError("Malformed url")
         }
         
-        let query = "grant_type=client_credentials&client_id=\(TCGPlayer.publicKey)&client_secret=\(TCGPlayer.privateKey)"
+//        let query = "grant_type=client_credentials&client_id=\(TCGPlayer.publicKey)&client_secret=\(TCGPlayer.privateKey)"
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = query.data(using: .utf8)
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "POST"
+//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request.httpBody = query.data(using: .utf8)
         
-        let (data, _) = try await URLSession.shared.asyncData(for: request)
+//        let (data, _) = try await URLSession.shared.asyncData(for: request)
+        
+//        if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+//           let token = json["access_token"] as? String {
+//            tcgplayerAPIToken = token
+//        } else {
+//            fatalError("access_token is nil")
+//        }
 
-        if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
-           let token = json["access_token"] as? String {
-            tcgplayerAPIToken = token
+        let httpClient = HTTPClient(eventLoopGroupProvider: .singleton)
+        let payload = TcgPlayerPayload(grantType: "client_credentials",
+                                       clientId: TCGPlayer.publicKey,
+                                       clientSecret: TCGPlayer.privateKey)
+        let encoder = JSONEncoder()
+        encoder.keyEncodingStrategy = .convertToSnakeCase
+        let jsonData = try encoder.encode(payload)
+        var request = HTTPClientRequest(url: cleanUrl)
+        request.method = .POST
+        request.headers.add(name: "Content-Type", value: "application/json")
+        request.body = .bytes(jsonData)
+        
+        let response = try await httpClient.execute(request, timeout: .seconds(5))
+        if response.status == .ok {
+            if let contentType = response.headers.first(name: "Content-Type"), contentType.contains("application/json") {
+                
+                let buffer = try await response.body.collect(upTo: 1024 * 1024)
+                let data = Data(buffer: buffer)
+                let json = try JSONDecoder().decode([String: String].self, from: data)
+                if let token = json["access_token"] {
+                    tcgplayerAPIToken = token
+                } else {
+                    fatalError("access_token is nil")
+                }
+            }
         } else {
-            fatalError("access_token is nil")
+            fatalError("getTcgPlayerToken: \(response.body)")
         }
+        try await httpClient.shutdown()
     }
     
     func fetchCardPricingBy(groupId: Int32) async throws -> [() async throws -> Void] {
         let urlString = "https://api.tcgplayer.com/\(TCGPlayer.apiVersion)/pricing/group/\(groupId)"
 
-        guard let cleanUrl = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-           let url = URL(string: cleanUrl) else {
+        guard let cleanUrl = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             fatalError("Malformed url")
         }
-            
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(tcgplayerAPIToken)", forHTTPHeaderField: "Authorization")
-        
-        let (data, _) = try await URLSession.shared.asyncData(for: request)
         var processes = [() async throws -> Void]()
         
-        if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
-           let results = json["results"] as? [[String: Any]] {
-            for result in results {
-                processes.append({
-                    try await self.createCardPricing(price: result)
-                })
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "GET"
+//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request.setValue("Bearer \(tcgplayerAPIToken)", forHTTPHeaderField: "Authorization")
+//        
+//        let (data, _) = try await URLSession.shared.asyncData(for: request)
+//        
+//        
+//        if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+//           let results = json["results"] as? [[String: Any]] {
+//            for result in results {
+//                processes.append({
+//                    try await self.createCardPricing(price: result)
+//                })
+//            }
+//        }
+     
+        let httpClient = HTTPClient(eventLoopGroupProvider: .singleton)
+        var request = HTTPClientRequest(url: cleanUrl)
+        request.method = .GET
+        request.headers.add(name: "Content-Type", value: "application/json")
+        request.headers.add(name: "Authorization", value: "Bearer \(tcgplayerAPIToken)")
+        
+        let response = try await httpClient.execute(request, timeout: .seconds(5))
+        if response.status == .ok {
+            if let contentType = response.headers.first(name: "Content-Type"), contentType.contains("application/json") {
+                
+                let buffer = try await response.body.collect(upTo: 1024 * 1024)
+                let data = Data(buffer: buffer)
+                let json = try JSONDecoder().decode([String: [[String: String]]].self, from: data)
+                if let results = json["results"] {
+                    for result in results {
+                        processes.append({
+                            try await self.createCardPricing(price: result)
+                        })
+                    }
+                }
             }
+        } else {
+            fatalError("fetchCardPricingBy: \(response.body)")
         }
+        try await httpClient.shutdown()
         
         return processes
     }

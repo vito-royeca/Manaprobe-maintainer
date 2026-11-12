@@ -1,6 +1,6 @@
 //
 //  Maintainer+Sets.swift
-//  ManaGuide-maintainer
+//  Manaprobe-maintainer
 //
 //  Created by Vito Royeca on 23/10/2018.
 //
@@ -17,14 +17,16 @@ extension Maintainer {
         
         processes.append(contentsOf: filterSetBlocks(array: setsArray))
         processes.append(contentsOf: filterSetTypes(array: setsArray))
-        processes.append(contentsOf: filterSets(array: setsArray))
+        processes.append(contentsOf: try await filterSets(array: setsArray))
 
         try await exec(processes: processes)
         endActivity(label: label, from: date)
     }
     
     func setsData() -> [[String: Any]] {
-        let setsPath = "\(cachePath)/\(filePrefix)_scryfall-sets.json"
+        guard let setsPath = Resource.sets.localPath(cachePath, filePrefix) else {
+            return []
+        }
         
         let data = try! Data(contentsOf: URL(fileURLWithPath: setsPath))
         guard let dict = try! JSONSerialization.jsonObject(with: data,
@@ -67,8 +69,8 @@ extension Maintainer {
         return processes
     }
     
-    func filterSets(array: [[String: Any]]) -> [() async throws -> Void] {
-        let keyruneCodes = updatedKeyruneCodes()
+    func filterSets(array: [[String: Any]]) async throws -> [() async throws -> Void] {
+        let keyruneCodes = try await updatedKeyruneCodes()
         let defaultKeyruneClass = "dpa"
         let defaultKeyruneUnicode = "e689"
         let defaultLogoCode = "null"
@@ -112,7 +114,7 @@ extension Maintainer {
         let setsPath = imagesPath.replacingOccurrences(of: "cards", with: "sets")
         var processes = [() async throws -> Void]()
         
-        for keyrune in updatedKeyruneCodes() {
+        for keyrune in try await updatedKeyruneCodes() {
             if let logoCode = keyrune["logo_code"],
                 logoCode != "null" {
                 

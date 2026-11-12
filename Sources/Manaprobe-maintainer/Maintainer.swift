@@ -1,6 +1,6 @@
 //
 //  Maintainer.swift
-//  ManaGuide-maintainer
+//  Manaprobe-maintainer
 //
 //  Created by Vito Royeca on 23/10/2018.
 //
@@ -122,20 +122,22 @@ class Maintainer {
         processes.append({
             try await self.startServerUpdate()
         })
+
         if isFullUpdate {
             processes.append(contentsOf: fetchResources())
             processes.append(contentsOf: updateResources())
         }
         
+        // TODO: fix this
         processes.append({
             try await self.processPricingData()
         })
-        processes.append({
-            try await self.processServerReindex()
-        })
-        processes.append({
-            try await self.processServerVacuum()
-        })
+//        processes.append({
+//            try await self.processServerReindex()
+//        })
+//        processes.append({
+//            try await self.processServerVacuum()
+//        })
         processes.append({
             try await self.endServerUpdate()
         })

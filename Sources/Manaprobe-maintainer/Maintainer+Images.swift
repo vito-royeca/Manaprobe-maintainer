@@ -1,6 +1,6 @@
 //
 //  Maintainer+Images.swift
-//  ManaGuide-maintainer
+//  Manaprobe-maintainer
 //
 //  Created by Vito Royeca on 1/12/20.
 //

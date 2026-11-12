@@ -1,6 +1,6 @@
 //
 //  Maintainer+ServerUpdate.swift
-//  ManaGuide-maintainer
+//  Manaprobe-maintainer
 //
 //  Created by Vito Royeca on 12/7/19.
 //

@@ -1,6 +1,6 @@
 //
 //  Maintainer+Rules.swift
-//  ManaGuide-maintainer
+//  Manaprobe-maintainer
 //
 //  Created by Vito Royeca on 23/10/2018.
 //
@@ -13,7 +13,7 @@ extension Maintainer {
     func processComprehensiveRulesData() async throws {
         let label = "processComprehensiveRulesData"
         let date = self.startActivity(label: label)
-        let rulesArray = rulesData()
+        let rulesArray = try await rulesData()
         var processes = [() async throws -> Void]()
         
         processes.append({
@@ -25,33 +25,36 @@ extension Maintainer {
         endActivity(label: label, from: date)
     }
 
-    func rulesData() -> [String] {
-        guard let url = rulesURL() else {
+    func rulesData() async throws -> [String] {
+        guard let url = try await rulesURL() else {
+            print("rules href not found")
             return []
         }
-        
+
         let data = try! String(contentsOf: url, encoding: .utf8)
         let lines = data.components(separatedBy: .newlines)
         return lines
     }
 
-    private func rulesURL() -> URL? {
-        guard let remoteUrl = URL(string: Resource.rules.remotePath) else {
-            return nil
-        }
-        
-        do {
-            let document = try HTML(url: remoteUrl, encoding: .utf8)
-            
-            for a in document.xpath("//a[@class='cta']") {
-                if let href = a["href"] {
-                    if href.contains("MagicCompRules") && href.hasSuffix(".txt") {
-                        return URL(string: href)
+    private func rulesURL() async throws -> URL? {
+        if let localPath = Resource.rules.localPath(cachePath, filePrefix) {
+            try await fetchData(from: Resource.rules.remotePath,
+                                saveTo: localPath,
+                                headers: Resource.rulings.headers)
+            do {
+                let document = try HTML(url: URL(fileURLWithPath: localPath), encoding: .utf8)
+                
+                for a in document.xpath("//a[@class='cta']") {
+                    if let href = a["href"] {
+                        if href.contains("MagicCompRules") && href.hasSuffix(".txt") {
+                            return URL(string: href)
+                        }
                     }
                 }
+            } catch {
+                print(error)
+                return nil
             }
-        } catch {
-            print(error)
         }
         
         return nil

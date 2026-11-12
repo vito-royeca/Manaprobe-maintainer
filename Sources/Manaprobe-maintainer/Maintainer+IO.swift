@@ -1,6 +1,6 @@
 //
 //  Maintainer+IO.swift
-//  ManaGuide-maintainer
+//  Manaprobe-maintainer
 //
 //  Created by Vito Royeca on 10/9/24.
 //
@@ -9,7 +9,9 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
+import AsyncHTTPClient
 import Gzip
+
 
 extension Maintainer {
     func processFile(label: String,
@@ -85,32 +87,41 @@ extension Maintainer {
 
     func fetchData(from remotePath: String,
                    saveTo localPath: String?,
-                   unpack: Bool = false) async throws {
+                   unpack: Bool = false,
+                   headers: [String:String] = [:]) async throws {
         guard let localPath,
-            !FileManager.default.fileExists(atPath: localPath) else {
+              !FileManager.default.fileExists(atPath: localPath) else {
             return
         }
-            
-        guard let urlString = remotePath.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-            let remoteURL = URL(string: urlString),
-            let localURL = URL(string: "file://\(localPath)") else {
-            fatalError("Malformed url")
-        }
-
+        
         do {
-            let (tempURL, _) = try await URLSession.shared.asyncDownload(from: remoteURL)
-            
-            if FileManager.default.fileExists(atPath: tempURL.path()) {
-                if unpack {
-                    try decompressGzipFile(at: tempURL, to: localURL)
-//                    try FileManager.default.removeItem(at: tempURL)
-                } else {
-                    try FileManager.default.moveItem(at: tempURL, to: localURL)
-                }
+            let tempPath = "\(NSTemporaryDirectory())_\(UUID())"
+            guard let urlString = remotePath.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+                  let localURL = URL(string: "file://\(localPath)"),
+                  let tempURL = URL(string: "file://\(tempPath)") else {
+                fatalError("Malformed url")
             }
             
+            let client = HTTPClient(eventLoopGroupProvider: .singleton)
+            let delegate = try FileDownloadDelegate(path: unpack ? tempPath : localPath)
+            var request = try HTTPClient.Request(url: urlString)
+            
+            for (k,v) in headers {
+                request.headers.add(name: k, value: v)
+            }
+            
+            _ = try await client.execute(request: request, delegate: delegate)
+                .futureResult
+                .get()
+            
+            if unpack {
+                if FileManager.default.fileExists(atPath: tempPath) {
+                    try decompressGzipFile(at: tempURL, to: localURL)
+                }
+            }
+            try await client.shutdown()
         } catch {
-            print("\(error)")
+            print("error in fetchData: \(error)")
         }
     }
 

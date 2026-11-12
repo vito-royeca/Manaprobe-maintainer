@@ -1,6 +1,6 @@
 //
 //  Maintainer+CardsPostgres.swift
-//  ManaGuide-maintainer
+//  Manaprobe-maintainer
 //
 //  Created by Vito Royeca on 10/27/19.
 //

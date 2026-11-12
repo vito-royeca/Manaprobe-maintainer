@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>en</key>
+	<dict>
+		<key>display_code</key>
+		<string>EN</string>
+		<key>name</key>
+		<string>English</string>
+		<key>name_section</key>
+		<string>E</string>
+	</dict>
+	
+    <key>es</key>
+    <dict>
+        <key>display_code</key>
+        <string>ES</string>
+        <key>name</key>
+        <string>Spanish</string>
+        <key>name_section</key>
+        <string>S</string>
+    </dict>
+    
+    <key>fr</key>
+    <dict>
+        <key>display_code</key>
+        <string>FR</string>
+        <key>name</key>
+        <string>French</string>
+        <key>name_section</key>
+        <string>F</string>
+    </dict>
+    
+    <key>de</key>
+    <dict>
+        <key>display_code</key>
+        <string>DE</string>
+        <key>name</key>
+        <string>German</string>
+        <key>name_section</key>
+        <string>G</string>
+    </dict>
+    
+    <key>it</key>
+    <dict>
+        <key>display_code</key>
+        <string>IT</string>
+        <key>name</key>
+        <string>Italian</string>
+        <key>name_section</key>
+        <string>I</string>
+    </dict>
+    
+    <key>pt</key>
+    <dict>
+        <key>display_code</key>
+        <string>PT</string>
+        <key>name</key>
+        <string>Portuguese</string>
+        <key>name_section</key>
+        <string>P</string>
+    </dict>
+    
+    <key>ja</key>
+    <dict>
+        <key>display_code</key>
+        <string>JP</string>
+        <key>name</key>
+        <string>Japanese</string>
+        <key>name_section</key>
+        <string>J</string>
+    </dict>
+    
+    <key>ko</key>
+    <dict>
+        <key>display_code</key>
+        <string>KR</string>
+        <key>name</key>
+        <string>Korean</string>
+        <key>name_section</key>
+        <string>K</string>
+    </dict>
+    
+    <key>ru</key>
+    <dict>
+        <key>display_code</key>
+        <string>RU</string>
+        <key>name</key>
+        <string>Russian</string>
+        <key>name_section</key>
+        <string>R</string>
+    </dict>
+    
+    <key>zhs</key>
+    <dict>
+        <key>display_code</key>
+        <string>CS</string>
+        <key>name</key>
+        <string>Simplified Chinese</string>
+        <key>name_section</key>
+        <string>S</string>
+    </dict>
+    
+    <key>zht</key>
+    <dict>
+        <key>display_code</key>
+        <string>CT</string>
+        <key>name</key>
+        <string>Traditional Chinese</string>
+        <key>name_section</key>
+        <string>T</string>
+    </dict>
+    
+    <key>he</key>
+    <dict>
+        <key>name</key>
+        <string>Hebrew</string>
+        <key>name_section</key>
+        <string>H</string>
+    </dict>
+    
+    <key>la</key>
+    <dict>
+        <key>name</key>
+        <string>Latin</string>
+        <key>name_section</key>
+        <string>L</string>
+    </dict>
+    
+    <key>grc</key>
+    <dict>
+        <key>name</key>
+        <string>Ancient Greek</string>
+        <key>name_section</key>
+        <string>A</string>
+    </dict>
+    
+    <key>ar</key>
+    <dict>
+        <key>name</key>
+        <string>Arabic</string>
+        <key>name_section</key>
+        <string>A</string>
+    </dict>
+    
+    <key>sa</key>
+    <dict>
+        <key>name</key>
+        <string>Sanskrit</string>
+        <key>name_section</key>
+        <string>S</string>
+    </dict>
+    
+    <key>ph</key>
+    <dict>
+        <key>name</key>
+        <string>Phyrexian</string>
+        <key>name_section</key>
+        <string>P</string>
+    </dict>
+    
+    <key>qya</key>
+    <dict>
+        <key>name</key>
+        <string>Quenya</string>
+        <key>name_section</key>
+        <string>Q</string>
+    </dict>
+    
+    <key>dw</key>
+    <dict>
+        <key>name</key>
+        <string>Dwarvish</string>
+        <key>name_section</key>
+        <string>D</string>
+    </dict>
+    
+    <key>tlh</key>
+    <dict>
+        <key>display_code</key>
+        <string>KL</string>
+        <key>name</key>
+        <string>Klingon</string>
+        <key>name_section</key>
+        <string>K</string>
+    </dict>
+
+</dict>
+</plist>

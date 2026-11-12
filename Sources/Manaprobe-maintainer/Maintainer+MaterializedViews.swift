@@ -1,6 +1,6 @@
 //
 //  Maintainer+MaterializedViews.swift
-//  ManaGuide-maintainer
+//  Manaprobe-maintainer
 //
 //  Created by Vito Royeca on 6/2/25.
 //

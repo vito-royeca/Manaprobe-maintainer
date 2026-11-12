@@ -1,6 +1,7 @@
 //
 //  String+Slice.swift
-//  
+//  Manaprobe-maintainer
+//
 //
 //  Created by Vito Royeca on 11/26/23.
 //

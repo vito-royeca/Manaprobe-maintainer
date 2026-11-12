@@ -1,6 +1,6 @@
 //
 //  URLSession+async.swift
-//  ManaGuide-maintainer
+//  Manaprobe-maintainer
 //
 //  Created by Vito Royeca on 10/7/24.
 //

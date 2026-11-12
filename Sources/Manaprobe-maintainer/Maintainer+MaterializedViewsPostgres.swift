@@ -1,6 +1,6 @@
 //
 //  Maintainer+MaterializedViewsPostgres.swift
-//  ManaGuide-maintainer
+//  Manaprobe-maintainer
 //
 //  Created by Vito Royeca on 9/15/25.
 //

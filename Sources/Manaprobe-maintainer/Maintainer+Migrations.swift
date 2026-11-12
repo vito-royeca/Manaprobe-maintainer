@@ -1,6 +1,6 @@
 //
 //  Maintainer+Migrations.swift
-//  ManaGuide-maintainer
+//  Manaprobe-maintainer
 //
 //  Created by Vito Royeca on 9/14/25.
 //
@@ -156,16 +156,22 @@ extension Maintainer {
             }
             
             do {
-                let url = URL(string: remotePath)!
-                let (data, _) = try await URLSession.shared.data(from: url)
-                let responseObject = try JSONDecoder().decode(Migrations.self, from: data)
-                
-                hasMore = responseObject.hasMore
-                nextPage = responseObject.nextPage
-                page += 1
-                migrations.append(contentsOf: responseObject.data)
+                if let localPath = Resource.migrations.localPath(self.cachePath,
+                                                                 "\(self.filePrefix)p\(page)") {
+                    try await fetchData(from: remotePath,
+                                        saveTo: localPath,
+                                        headers: Resource.sets.headers)
+                    print(localPath)
+                    let data = try! Data(contentsOf: URL(fileURLWithPath: localPath))
+                    let responseObject = try JSONDecoder().decode(Migrations.self, from: data)
+                    
+                    hasMore = responseObject.hasMore
+                    nextPage = responseObject.nextPage
+                    page += 1
+                    migrations.append(contentsOf: responseObject.data)
+                }
             } catch {
-                fatalError("In fetchMigrations: \(error)")
+                fatalError("error in fetchMigrations: \(error)")
             }
             
         } while hasMore

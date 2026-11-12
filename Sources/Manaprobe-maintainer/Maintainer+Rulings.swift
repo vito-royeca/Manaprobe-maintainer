@@ -1,6 +1,6 @@
 //
 //  Maintainer+Rulings.swift
-//  ManaGuide-maintainer
+//  Manaprobe-maintainer
 //
 //  Created by Vito Royeca on 14/07/2019.
 //

@@ -34,6 +34,7 @@ enum Resource: Equatable, Hashable, Identifiable, CaseIterable {
         case .cards: "scryfall-all-cards.jsonl"
         case .rulings: "scryfall-rulings.jsonl"
         case .sets: "scryfall-sets.json"
+        case .rules: "rules.html"
         case .migrations: "scryfall-migration.json"
         default: nil
         }
@@ -51,6 +52,16 @@ enum Resource: Equatable, Hashable, Identifiable, CaseIterable {
         }
     }
     
+    var headers: [String:String] {
+        switch self {
+        case .cards, .rulings, .sets, .migrations:
+            ["User-Agent" : "Manaprobe/1.0",
+             "Accept" : "application/json;q=0.9,*/*;q=0.8"]
+        default:
+            [:]
+        }
+    }
+
     func localPath(_ cachePath: String, _ localPrefix: String) -> String? {
         guard let fileName else { return nil }
         
@@ -63,59 +74,62 @@ extension Maintainer {
         var processes = [() async throws -> Void]()
         filePrefix = "manaprobe-\(Date().timeIntervalSince1970)"
         
-        processes.append({
-            try await self.fetchData(from: Resource.sets.remotePath,
-                                     saveTo: Resource.sets.localPath(self.cachePath, self.filePrefix))
-        })
-        processes.append({
-            try await self.fetchData(from: self.getDownloadURI(resource: .cards),
-                                     saveTo: Resource.cards.localPath(self.cachePath, self.filePrefix),
-                                     unpack: true)
-        })
-        processes.append({
-            try await self.fetchData(from: self.getDownloadURI(resource: .rulings),
-                                     saveTo: Resource.rulings.localPath(self.cachePath, self.filePrefix),
-                                     unpack: true)
-        })
-        processes.append({
-            try await self.downloadSetLogos()
-        })
-        processes.append({
-            try await self.fetchCardImages()
-        })
+//        processes.append({
+//            try await self.fetchData(from: Resource.sets.remotePath,
+//                                     saveTo: Resource.sets.localPath(self.cachePath, self.filePrefix),
+//                                     headers: Resource.sets.headers)
+//        })
+//        processes.append({
+//            try await self.fetchData(from: self.getDownloadURI(resource: .cards),
+//                                     saveTo: Resource.cards.localPath(self.cachePath, self.filePrefix),
+//                                     unpack: true,
+//                                     headers: Resource.sets.headers)
+//        })
+//        processes.append({
+//            try await self.fetchData(from: self.getDownloadURI(resource: .rulings),
+//                                     saveTo: Resource.rulings.localPath(self.cachePath, self.filePrefix),
+//                                     unpack: true,
+//                                     headers: Resource.sets.headers)
+//        })
+//        processes.append({
+//            try await self.downloadSetLogos()
+//        })
+//        processes.append({
+//            try await self.fetchCardImages()
+//        })
         return processes
     }
     
     func updateResources() -> [() async throws -> Void] {
         var processes = [() async throws -> Void]()
         
-        processes.append({
-            try await self.processSetsData()
-        })
-        processes.append({
-            try await self.processCardsData(type: .misc)
-        })
-        processes.append({
-            try await self.processCardsData(type: .cards)
-        })
-        processes.append({
-            try await self.processCardsData(type: .partsAndFaces)
-        })
-        processes.append({
-            try await self.processRulingsData()
-        })
-        processes.append({
-            try await self.processOtherCardsData()
-        })
-        processes.append({
-            try await self.processComprehensiveRulesData()
-        })
-        processes.append({
-            try await self.processMigrationsData()
-        })
-        processes.append({
-            try await self.processMaterializedViews()
-        })
+//        processes.append({
+//            try await self.processSetsData()
+//        })
+//        processes.append({
+//            try await self.processCardsData(type: .misc)
+//        })
+//        processes.append({
+//            try await self.processCardsData(type: .cards)
+//        })
+//        processes.append({
+//            try await self.processCardsData(type: .partsAndFaces)
+//        })
+//        processes.append({
+//            try await self.processRulingsData()
+//        })
+//        processes.append({
+//            try await self.processOtherCardsData()
+//        })
+//        processes.append({
+//            try await self.processComprehensiveRulesData()
+//        })
+//        processes.append({
+//            try await self.processMigrationsData()
+//        })
+//        processes.append({
+//            try await self.processMaterializedViews()
+//        })
         
         return processes
     }

@@ -1,6 +1,6 @@
 //
 //  Maintainer+SetsPostgres.swift
-//  ManaGuide-maintainer
+//  Manaprobe-maintainer
 //
 //  Created by Vito Royeca on 10/26/19.
 //
@@ -86,8 +86,8 @@ extension Maintainer {
         try await exec(query: query, with: parameters)
     }
     
-    func updatedKeyruneCodes() -> [[String: String]] {
-        guard let document = keyruneCodes() else {
+    func updatedKeyruneCodes() async throws -> [[String: String]] {
+        guard let document = try await keyruneCodes() else {
             return []
         }
 
@@ -110,7 +110,7 @@ extension Maintainer {
             }
         }
         
-        let keyruneUpdates = keyruneUpdates()
+        let keyruneUpdates = loadData(forResource: "keyrune-updates", withExtension: "plist")
         let combinedKeyrunes = keyrunes.merging(keyruneUpdates) { (_, new) in new }
         
         return combinedKeyrunes.map({
@@ -122,24 +122,6 @@ extension Maintainer {
     }
     
     func fetchSets() async throws -> [[String: Any]]? {
-//        let urlString = "https://managuideapp.com/sets?json=true"
-//        
-//        guard let cleanURL = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-//           let url = URL(string: cleanURL) else {
-//            fatalError("Malformed url")
-//        }
-//        
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "GET"
-//        request.setValue("application/json", forHTTPHeaderField: "Accept")
-//
-//        do {
-//            let (data, _) = try await URLSession.shared.asyncData(for: request)
-//            return try JSONSerialization.jsonObject(with: data) as? [[String: Any]]
-//        } catch {
-//            print(error)
-//            return nil
-//        }
         var sets: [[String: Any]] = [[String: Any]]()
         
         let text = "select code, languages, tcgPlayer_id from selectSets()"
@@ -182,26 +164,18 @@ extension Maintainer {
         return sets
     }
 
-    private func keyruneCodes() -> HTMLDocument? {
-        guard let remoteUrl = URL(string: Resource.rulings.remotePath) else {
-            return nil
-        }
-        
-        do {
-            return try HTML(url: remoteUrl, encoding: .utf8)
-        } catch {
-            print(error)
+    private func keyruneCodes() async throws -> HTMLDocument? {
+        if let localPath = Resource.rulings.localPath(cachePath, filePrefix) {
+            try await fetchData(from: Resource.rulings.remotePath,
+                                saveTo: localPath,
+                                headers: Resource.rulings.headers)
+            do {
+                return try HTML(url: URL(fileURLWithPath: localPath), encoding: .utf8)
+            } catch {
+                print(error)
+                return nil
+            }
         }
         return nil
-    }
-    
-    private func keyruneUpdates() -> [String: [String: String]] {
-        if let url = Bundle.module.url(forResource: "keyrune-updates", withExtension: "plist") {
-            let data = try! Data(contentsOf: url)
-            let decoder = PropertyListDecoder()
-            return try! decoder.decode([String: [String: String]].self, from: data)
-        } else {
-            return [:]
-        }
     }
 }

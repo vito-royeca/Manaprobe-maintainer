@@ -1,6 +1,6 @@
 //
-//  ManaGuide+Utility.swift
-//  ManaGuide-maintainer
+//  Maintainer+Utility.swift
+//  Manaprobe-maintainer
 //
 //  Created by Vito Royeca on 10/7/24.
 //
@@ -106,5 +106,15 @@ extension Maintainer {
 
         let string = format.string(from: date)
         return string
+    }
+    
+    func loadData(forResource resource: String, withExtension ext: String) -> [String: [String: String]] {
+        if let url = Bundle.module.url(forResource: resource, withExtension: ext) {
+            let data = try! Data(contentsOf: url)
+            let decoder = PropertyListDecoder()
+            return try! decoder.decode([String: [String: String]].self, from: data)
+        } else {
+            return [:]
+        }
     }
 }

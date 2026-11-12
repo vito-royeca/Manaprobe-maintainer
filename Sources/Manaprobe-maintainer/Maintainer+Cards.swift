@@ -1,6 +1,6 @@
 //
 //  Maintainer+Cards.swift
-//  ManaGuide-maintainer
+//  Manaprobe-maintainer
 //
 //  Created by Vito Royeca on 21.10.18.
 //
@@ -269,84 +269,24 @@ extension Maintainer {
             return nil
         }
         
+        let languages = loadData(forResource: "languages", withExtension: "plist")
         let code = lang
         var displayCode = "NULL"
         var name = "NULL"
         var nameSection = "NULL"
         
-        switch code {
-        case "en":
-            displayCode = "EN"
-            name = "English"
-            nameSection = sectionFor(name: name) ?? "NULL"
-        case "es":
-            displayCode = "ES"
-            name = "Spanish"
-            nameSection = sectionFor(name: name) ?? "NULL"
-        case "fr":
-            displayCode = "FR"
-            name = "French"
-            nameSection = sectionFor(name: name) ?? "NULL"
-        case "de":
-            displayCode = "DE"
-            name = "German"
-            nameSection = sectionFor(name: name) ?? "NULL"
-        case "it":
-            displayCode = "IT"
-            name = "Italian"
-            nameSection = sectionFor(name: name) ?? "NULL"
-        case "pt":
-            displayCode = "PT"
-            name = "Portuguese"
-            nameSection = sectionFor(name: name) ?? "NULL"
-        case "ja":
-            displayCode = "JP"
-            name = "Japanese"
-            nameSection = sectionFor(name: name) ?? "NULL"
-        case "ko":
-            displayCode = "KR"
-            name = "Korean"
-            nameSection = sectionFor(name: name) ?? "NULL"
-        case "ru":
-            displayCode = "RU"
-            name = "Russian"
-            nameSection = sectionFor(name: name) ?? "NULL"
-        case "zhs":
-            displayCode = "CS"
-            name = "Simplified Chinese"
-            nameSection = sectionFor(name: name) ?? "NULL"
-        case "zht":
-            displayCode = "CT"
-            name = "Traditional Chinese"
-            nameSection = sectionFor(name: name) ?? "NULL"
-        case "he":
-            name = "Hebrew"
-            nameSection = sectionFor(name: name) ?? "NULL"
-        case "la":
-            name = "Latin"
-            nameSection = sectionFor(name: name) ?? "NULL"
-        case "grc":
-            name = "Ancient Greek"
-            nameSection = sectionFor(name: name) ?? "NULL"
-        case "ar":
-            name = "Arabic"
-            nameSection = sectionFor(name: name) ?? "NULL"
-        case "sa":
-            name = "Sanskrit"
-            nameSection = sectionFor(name: name) ?? "NULL"
-        case "ph":
-            name = "Phyrexian"
-            nameSection = sectionFor(name: name) ?? "NULL"
-        case "qya":
-            name = "Quenya"
-            nameSection = sectionFor(name: name) ?? "NULL"
-        case "dw":
-            name = "Dwarvish"
-            nameSection = sectionFor(name: name) ?? "NULL"
-        default:
-            ()
+        if let language = languages[code] {
+            if let value = language["display_code"] {
+                displayCode = value
+            }
+            if let value = language["name"] {
+                name = value
+            }
+            if let value = language["name_section"] {
+                nameSection = value
+            }
         }
-        
+
         return [
             "code": code,
             "display_code": displayCode,
@@ -360,63 +300,15 @@ extension Maintainer {
             return nil
         }
         
+        let layouts = loadData(forResource: "layouts", withExtension: "plist")
         let code = layout
         let name = capitalize(string: displayFor(name: code))
         var description_ = "NULL"
         
-        switch code {
-        case "normal":
-            description_ = "A standard Magic card with one face"
-        case "split":
-            description_ = "A split-faced card"
-        case "flip":
-            description_ = "Cards that invert vertically with the flip keyword"
-        case "transform":
-            description_ = "Double-sided cards that transform"
-        case "modal_dfc":
-            description_ = "Double-sided cards that can be played either-side"
-        case "meld":
-            description_ = "Cards with meld parts printed on the back"
-        case "leveler":
-            description_ = "Cards with Level Up"
-        case "class":
-            description_ = "Class-type enchantment cards"
-        case "case":
-            description_ = "Case-type enchantment cards"
-        case "saga":
-            description_ = "Saga-type cards"
-        case "adventure":
-            description_ = "Cards with an Adventure spell part"
-        case "prepare":
-            description_ = "Cards with a prepared spell part"
-        case "mutate":
-            description_ = "Cards with Mutate"
-        case "prototype":
-            description_ = "Cards with Prototype"
-        case "battle":
-            description_ = "Battle-type cards"
-        case "planar":
-            description_ = "Plane and Phenomenon-type cards"
-        case "scheme":
-            description_ = "Scheme-type cards"
-        case "vanguard":
-            description_ = "Vanguard-type cards"
-        case "token":
-            description_ = "Token cards"
-        case "double_faced_token":
-            description_ = "Tokens with another token printed on the back"
-        case "emblem":
-            description_ = "Emblem cards"
-        case "augment":
-            description_ = "Cards with Augment"
-        case "host":
-            description_ = "Host-type cards"
-        case "art_series":
-            description_ = "Art Series collectable double-faced cards"
-        case "reversible_card":
-            description_ = "A Magic card with two sides that are unrelated"
-        default:
-            ()
+        if let layout = layouts[code] {
+            if let value = layout["description_"] {
+                description_ = value
+            }
         }
 
         return [
@@ -431,23 +323,16 @@ extension Maintainer {
             return nil
         }
         
+        let frames = loadData(forResource: "frames", withExtension: "plist")
         let name = frame
         var description_ = "NULL"
         
-        switch name {
-        case "1993":
-            description_ = "The original Magic card frame, starting from Limited Edition Alpha."
-        case "1997":
-            description_ = "The updated classic frame starting from Mirage block."
-        case "2003":
-            description_ = "The \"modern\" Magic card frame, introduced in Eighth Edition and Mirrodin block."
-        case "2015":
-            description_ = "The holofoil-stamp Magic card frame, introduced in Magic 2015."
-        case "future":
-            description_ = "The frame used on cards from the future."
-        default:
-            ()
+        if let frame = frames[name] {
+            if let value = frame["description_"] {
+                description_ = value
+            }
         }
+        
         return [
             "name": name,
             "description_": description_
@@ -461,88 +346,19 @@ extension Maintainer {
             return array
         }
         
+        let effects = loadData(forResource: "frameEffects", withExtension: "plist")
+        
         for frameEffect in frameEffects {
             let id = frameEffect
-            var name = "NULL"
+            let name = capitalize(string: id)
             var description_ = "NULL"
             
-            switch id {
-            case "legendary":
-                name = capitalize(string: id)
-                description_ = "The cards have a legendary crown"
-            case "miracle":
-                name = capitalize(string: id)
-                description_ = "The miracle frame effect"
-            case "enchantment":
-                name = capitalize(string: id)
-                description_ = "The enchantment frame effect"
-            case "draft":
-                name = capitalize(string: id)
-                description_ = "The draft-matters frame effect"
-            case "devoid":
-                name = capitalize(string: id)
-                description_ = "The Devoid frame effect"
-            case "tombstone":
-                name = capitalize(string: id)
-                description_ = "The Odyssey tombstone mark"
-            case "colorshifted":
-                name = capitalize(string: id)
-                description_ = "A colorshifted frame"
-            case "inverted":
-                name = capitalize(string: id)
-                description_ = "Predominantly inverted text"
-            case "sunmoondfc":
-                name = capitalize(string: id)
-                description_ = "The sun and moon transform marks"
-            case "compasslanddfc":
-                name = capitalize(string: id)
-                description_ = "The compass and land transform marks"
-            case "originpwdfc":
-                name = capitalize(string: id)
-                description_ = "The Origins and planeswalker transform marks"
-            case "mooneldrazidfc":
-                name = capitalize(string: id)
-                description_ = "The moon and Eldrazi transform marks"
-            case "waxingandwaningmoondfc":
-                name = capitalize(string: id)
-                description_ = "The waxing and waning crescent moon transform marks"
-            case "showcase":
-                name = capitalize(string: id)
-                description_ = "A custom Showcase frame"
-            case "extendedart":
-                name = capitalize(string: id)
-                description_ = "An extended art frame"
-            case "companion":
-                name = capitalize(string: id)
-                description_ = "The cards have a companion frame"
-            case "etched":
-                name = capitalize(string: id)
-                description_ = "The cards have an etched foil treatment"
-            case "snow":
-                name = capitalize(string: id)
-                description_ = "The cards have the snowy frame effect"
-            case "lesson":
-                name = capitalize(string: id)
-                description_ = "The cards have the Lesson frame effect"
-            case "shatteredglass":
-                name = capitalize(string: id)
-                description_ = "The cards have the Shattered Glass frame effect"
-            case "convertdfc":
-                name = capitalize(string: id)
-                description_ = "The cards have More Than Meets the Eye™ marks"
-            case "fandfc":
-                name = capitalize(string: id)
-                description_ = "The cards have fan transforming marks"
-            case "upsidedowndfc":
-                name = capitalize(string: id)
-                description_ = "The cards have the Upside Down transforming marks"
-            case "spree":
-                name = capitalize(string: id)
-                description_ = "The cards have Spree asterisks"
-            default:
-                ()
+            if let effect = effects[id] {
+                if let value = effect["description_"] {
+                    description_ = value
+                }
             }
-        
+            
             array.append([
                 "id": id,
                 "name": name,

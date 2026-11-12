@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>1993</key>
+	<dict>
+		<key>description_</key>
+		<string>The original Magic card frame, starting from Limited Edition Alpha.</string>
+	</dict>
+	<key>1997</key>
+	<dict>
+		<key>description_</key>
+		<string>The updated classic frame starting from Mirage block</string>
+	</dict>
+	<key>2003</key>
+	<dict>
+		<key>description_</key>
+		<string>The "modern" Magic card frame, introduced in Eighth Edition and Mirrodin block.</string>
+	</dict>
+	<key>2015</key>
+	<dict>
+		<key>description_</key>
+		<string>The holofoil-stamp Magic card frame, introduced in Magic 2015.</string>
+	</dict>
+	<key>future</key>
+	<dict>
+		<key>description_</key>
+		<string>The frame used on cards from the future</string>
+	</dict>
+</dict>
+</plist>

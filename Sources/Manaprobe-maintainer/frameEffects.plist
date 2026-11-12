@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>legendary</key>
+    <dict>
+        <key>description_</key>
+        <string>A legendary crown</string>
+    </dict>
+    <key>miracle</key>
+    <dict>
+        <key>description_</key>
+        <string>The miracle frame effect</string>
+    </dict>
+    <key>enchantment</key>
+    <dict>
+        <key>description_</key>
+        <string>The enchantment frame effect</string>
+    </dict>
+    <key>draft</key>
+    <dict>
+        <key>description_</key>
+        <string>The draft-matters frame effect</string>
+    </dict>
+    <key>devoid</key>
+    <dict>
+        <key>description_</key>
+        <string>The Devoid frame effect</string>
+    </dict>
+    <key>tombstone</key>
+    <dict>
+        <key>description_</key>
+        <string>The Odyssey tombstone mark</string>
+    </dict>
+    <key>colorshifted</key>
+    <dict>
+        <key>description_</key>
+        <string>A colorshifted frame</string>
+    </dict>
+    <key>inverted</key>
+    <dict>
+        <key>description_</key>
+        <string>Predominantly inverted text</string>
+    </dict>
+    <key>sunmoondfc</key>
+    <dict>
+        <key>description_</key>
+        <string>The sun and moon transform marks</string>
+    </dict>
+    <key>compasslanddfc</key>
+    <dict>
+        <key>description_</key>
+        <string>The compass and land transform marks</string>
+    </dict>
+    <key>originpwdfc</key>
+    <dict>
+        <key>description_</key>
+        <string>The Origins and planeswalker transform marks</string>
+    </dict>
+    <key>mooneldrazidfc</key>
+    <dict>
+        <key>description_</key>
+        <string>The moon and Eldrazi transform marks</string>
+    </dict>
+    <key>waxingandwaningmoondfc</key>
+    <dict>
+        <key>description_</key>
+        <string>The waxing and waning crescent moon transform marks</string>
+    </dict>
+    <key>showcase</key>
+    <dict>
+        <key>description_</key>
+        <string>A custom Showcase frame</string>
+    </dict>
+    <key>extendedart</key>
+    <dict>
+        <key>description_</key>
+        <string>An extended art frame</string>
+    </dict>
+    <key>companion</key>
+    <dict>
+        <key>description_</key>
+        <string>A companion frame</string>
+    </dict>
+    <key>etched</key>
+    <dict>
+        <key>description_</key>
+        <string>An etched foil treatment</string>
+    </dict>
+    <key>snow</key>
+    <dict>
+        <key>description_</key>
+        <string>The snowy frame effect</string>
+    </dict>
+    <key>lesson</key>
+    <dict>
+        <key>description_</key>
+        <string>The Lesson frame effect</string>
+    </dict>
+    <key>shatteredglass</key>
+    <dict>
+        <key>description_</key>
+        <string>The Shattered Glass frame effect</string>
+    </dict>
+    <key>convertdfc</key>
+    <dict>
+        <key>description_</key>
+        <string>More Than Meets the Eye™ marks</string>
+    </dict>
+    <key>fandfc</key>
+    <dict>
+        <key>description_</key>
+        <string>Fan transforming marks</string>
+    </dict>
+    <key>upsidedowndfc</key>
+    <dict>
+        <key>description_</key>
+        <string>The Upside Down transforming marks</string>
+    </dict>
+    <key>spree</key>
+    <dict>
+        <key>description_</key>
+        <string>Spree asterisks</string>
+    </dict>
+    <key>dark</key>
+    <dict>
+        <key>description_</key>
+        <string>A dark frame</string>
+    </dict>
+</dict>
+</plist>

@@ -1,5 +1,6 @@
 //
 //  StreamingFileReader.swift
+//  Manaprobe-maintainer
 //
 //  From https://www.morgandavison.com/2020/02/05/streaming-file-reader-in-swift/
 //

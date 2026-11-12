@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>normal</key>
+    <dict>
+        <key>description_</key>
+        <string>A standard Magic card with one face</string>
+    </dict>
+
+    <key>split</key>
+    <dict>
+        <key>description_</key>
+        <string>A split-faced card</string>
+    </dict>
+
+    <key>flip</key>
+    <dict>
+        <key>description_</key>
+        <string>Cards that invert vertically with the flip keyword</string>
+    </dict>
+
+    <key>transform</key>
+    <dict>
+        <key>description_</key>
+        <string>Double-sided cards that transform</string>
+    </dict>
+
+    <key>modal_dfc</key>
+    <dict>
+        <key>description_</key>
+        <string>Double-sided cards that can be played either-side</string>
+    </dict>
+
+    <key>meld</key>
+    <dict>
+        <key>description_</key>
+        <string>Cards with meld parts printed on the back</string>
+    </dict>
+
+    <key>leveler</key>
+    <dict>
+        <key>description_</key>
+        <string>Cards with Level Up</string>
+    </dict>
+
+    <key>class</key>
+    <dict>
+        <key>description_</key>
+        <string>Class-type enchantment cards</string>
+    </dict>
+
+    <key>case</key>
+    <dict>
+        <key>description_</key>
+        <string>Case-type enchantment cards</string>
+    </dict>
+
+    <key>saga</key>
+    <dict>
+        <key>description_</key>
+        <string>Saga-type cards</string>
+    </dict>
+
+    <key>adventure</key>
+    <dict>
+        <key>description_</key>
+        <string>Cards with an Adventure spell part</string>
+    </dict>
+
+    <key>prepare</key>
+    <dict>
+        <key>description_</key>
+        <string>Cards with a prepared spell part</string>
+    </dict>
+
+    <key>mutate</key>
+    <dict>
+        <key>description_</key>
+        <string>Cards with Mutate</string>
+    </dict>
+
+    <key>prototype</key>
+    <dict>
+        <key>description_</key>
+        <string>Cards with Prototype</string>
+    </dict>
+
+    <key>battle</key>
+    <dict>
+        <key>description_</key>
+        <string>Battle-type cards</string>
+    </dict>
+
+    <key>planar</key>
+    <dict>
+        <key>description_</key>
+        <string>Plane and Phenomenon-type cards</string>
+    </dict>
+
+    <key>scheme</key>
+    <dict>
+        <key>description_</key>
+        <string>Scheme-type cards</string>
+    </dict>
+
+    <key>vanguard</key>
+    <dict>
+        <key>description_</key>
+        <string>Vanguard-type cards</string>
+    </dict>
+
+    <key>token</key>
+    <dict>
+        <key>description_</key>
+        <string>Token cards</string>
+    </dict>
+
+    <key>double_faced_token</key>
+    <dict>
+        <key>description_</key>
+        <string>Tokens with another token printed on the back</string>
+    </dict>
+
+    <key>emblem</key>
+    <dict>
+        <key>description_</key>
+        <string>Emblem cards</string>
+    </dict>
+
+    <key>augment</key>
+    <dict>
+        <key>description_</key>
+        <string>Cards with Augment</string>
+    </dict>
+
+    <key>host</key>
+    <dict>
+        <key>description_</key>
+        <string>Host-type cards</string>
+    </dict>
+
+    <key>art_series</key>
+    <dict>
+        <key>description_</key>
+        <string>Art Series collectable double-faced cards</string>
+    </dict>
+
+    <key>reversible_card</key>
+    <dict>
+        <key>description_</key>
+        <string>A Magic card with two sides that are unrelated</string>
+    </dict>
+
+    <key>front_card</key>
+    <dict>
+        <key>description_</key>
+        <string>A extra card that indicates a deck type</string>
+    </dict>
+</dict>
+</plist>
