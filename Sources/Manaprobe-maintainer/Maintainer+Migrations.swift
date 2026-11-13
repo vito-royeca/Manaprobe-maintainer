@@ -161,7 +161,7 @@ extension Maintainer {
                     try await fetchData(from: remotePath,
                                         saveTo: localPath,
                                         headers: Resource.sets.headers)
-                    print(localPath)
+                    print("page \(page)")
                     let data = try! Data(contentsOf: URL(fileURLWithPath: localPath))
                     let responseObject = try JSONDecoder().decode(Migrations.self, from: data)
                     

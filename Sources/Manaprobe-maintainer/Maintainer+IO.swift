@@ -95,7 +95,7 @@ extension Maintainer {
         }
         
         do {
-            let tempPath = "\(NSTemporaryDirectory())_\(UUID())"
+            let tempPath = "\(NSTemporaryDirectory())manaprobe-\(UUID())"
             guard let urlString = remotePath.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                   let localURL = URL(string: "file://\(localPath)"),
                   let tempURL = URL(string: "file://\(tempPath)") else {

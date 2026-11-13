@@ -128,16 +128,16 @@ class Maintainer {
             processes.append(contentsOf: updateResources())
         }
         
-        // TODO: fix this
+        // TODO: wait for the TCGPlayer application
+//        processes.append({
+//            try await self.processPricingData()
+//        })
         processes.append({
-            try await self.processPricingData()
+            try await self.processServerReindex()
         })
-//        processes.append({
-//            try await self.processServerReindex()
-//        })
-//        processes.append({
-//            try await self.processServerVacuum()
-//        })
+        processes.append({
+            try await self.processServerVacuum()
+        })
         processes.append({
             try await self.endServerUpdate()
         })
