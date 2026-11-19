@@ -336,6 +336,33 @@
 		<key>logo_code</key>
 		<string>afr</string>
 	</dict>
+	<key>afra</key>
+	<dict>
+		<key>keyrune_class</key>
+		<string>fra</string>
+		<key>keyrune_unicode</key>
+		<string>ea22</string>
+		<key>logo_code</key>
+		<string>a57</string>
+	</dict>
+	<key>ahob</key>
+	<dict>
+		<key>keyrune_class</key>
+		<string>hob</string>
+		<key>keyrune_unicode</key>
+		<string>ea19</string>
+		<key>logo_code</key>
+		<string>hob</string>
+	</dict>
+	<key>ahoc</key>
+	<dict>
+		<key>keyrune_class</key>
+		<string>hoc</string>
+		<key>keyrune_unicode</key>
+		<string>ea1e</string>
+		<key>logo_code</key>
+		<string>a56</string>
+	</dict>
 	<key>ainr</key>
 	<dict>
 		<key>keyrune_class</key>
@@ -650,6 +677,16 @@
 		<string>e614</string>
 		<key>logo_code</key>
 		<string>ant</string>
+	</dict>
+	<key>atrc</key>
+	<dict>
+		<key>logo_code</key>
+		<string>trc</string>
+	</dict>
+	<key>atrk</key>
+	<dict>
+		<key>logo_code</key>
+		<string>a58</string>
 	</dict>
 	<key>avow</key>
 	<dict>
@@ -3360,6 +3397,16 @@
 		<key>logo_code</key>
 		<string>znr</string>
 	</dict>
+	<key>nac</key>
+	<dict>
+		<key>logo_code</key>
+		<string>nau</string>
+	</dict>
+	<key>nau</key>
+	<dict>
+		<key>logo_code</key>
+		<string>nau</string>
+	</dict>
 	<key>ncc</key>
 	<dict>
 		<key>keyrune_class</key>
@@ -4631,6 +4678,15 @@
 		<string>e9ed</string>
 		<key>logo_code</key>
 		<string>fin</string>
+	</dict>
+	<key>pfra</key>
+	<dict>
+		<key>keyrune_class</key>
+		<string>fra</string>
+		<key>keyrune_unicode</key>
+		<string>ea22</string>
+		<key>logo_code</key>
+		<string>fra</string>
 	</dict>
 	<key>pfrf</key>
 	<dict>
@@ -6749,6 +6805,15 @@
 		<key>logo_code</key>
 		<string>mom</string>
 	</dict>
+	<key>smsh</key>
+	<dict>
+		<key>keyrune_class</key>
+		<string>msh</string>
+		<key>keyrune_unicode</key>
+		<string>ea1a</string>
+		<key>logo_code</key>
+		<string>msh</string>
+	</dict>
 	<key>snc</key>
 	<dict>
 		<key>keyrune_class</key>
@@ -8327,6 +8392,11 @@
 		<key>logo_code</key>
 		<string>mul</string>
 	</dict>
+	<key>tnau</key>
+	<dict>
+		<key>logo_code</key>
+		<string>nau</string>
+	</dict>
 	<key>tncc</key>
 	<dict>
 		<key>keyrune_class</key>
@@ -8705,6 +8775,11 @@
 		<string>ea06</string>
 		<key>logo_code</key>
 		<string>tmt</string>
+	</dict>
+	<key>ttrc</key>
+	<dict>
+		<key>logo_code</key>
+		<string>trc</string>
 	</dict>
 	<key>ttrk</key>
 	<dict>
@@ -9394,6 +9469,15 @@
 		<string>e9da</string>
 		<key>logo_code</key>
 		<string>eoe</string>
+	</dict>
+	<key>yfra</key>
+	<dict>
+		<key>keyrune_class</key>
+		<string>y26</string>
+		<key>keyrune_unicode</key>
+		<string>ea1b</string>
+		<key>logo_code</key>
+		<string>fra</string>
 	</dict>
 	<key>ylci</key>
 	<dict>
